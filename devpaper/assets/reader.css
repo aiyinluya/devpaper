@@ -1,0 +1,559 @@
+/**
+ * 阅刊长读：暖纸墨 + 赭褐单色系，头版 / 要闻 / 简讯仅靠色阶与体量区分，避免多主色打架。
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+}
+
+body.rd-paper ::selection {
+  background: rgba(180, 83, 9, 0.22);
+  color: var(--rd-ink);
+}
+
+body.rd-paper {
+  /* 纸、墨（挂 body 上便于 `reader-night.css` 用更高优先级覆盖） */
+  --rd-paper: #e8e2d8;
+  --rd-paper-glow: #f0ebe3;
+  --rd-card: #faf6ef;
+  --rd-card-warm: #fffaf3;
+  --rd-card-muted: #f2ebe1;
+  --rd-ink: #1c1917;
+  --rd-ink-body: #292524;
+  --rd-ink-soft: #57534e;
+  --rd-ink-muted: #78716c;
+  --rd-rule: rgba(28, 23, 20, 0.08);
+  --rd-rule-inner: rgba(28, 23, 20, 0.07);
+  --rd-brand: #9a3412;
+  --rd-brand-deep: #7c2d12;
+  --rd-brand-soft: rgba(154, 52, 18, 0.12);
+  --rd-accent: #b45309;
+  --rd-accent-deep: #92400e;
+  --rd-accent-mid: #c2410c;
+  --rd-accent-soft: rgba(180, 83, 9, 0.14);
+  --rd-amber-glow: rgba(251, 191, 36, 0.18);
+  --rd-note: #a8a29e;
+  --rd-note-deep: #78716c;
+  --rd-sev-high-fg: #7f1d1d;
+  --rd-sev-high-bg: rgba(185, 28, 28, 0.09);
+  --rd-sev-high-border: rgba(185, 28, 28, 0.28);
+  --rd-sans: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC",
+    "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+  margin: 0;
+  min-height: 100vh;
+  color: var(--rd-ink-body);
+  background-color: var(--rd-paper);
+  background-image: radial-gradient(
+      ellipse 120% 85% at 50% -15%,
+      var(--rd-paper-glow) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 100% 0%,
+      var(--rd-amber-glow) 0%,
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse 70% 45% at 0% 100%,
+      rgba(154, 52, 18, 0.06) 0%,
+      transparent 50%
+    );
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.66;
+  text-rendering: optimizeLegibility;
+}
+
+/* —— 报头 —— */
+.rd-masthead {
+  padding: 2rem 1rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--rd-rule);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 243, 0.95) 0%,
+    rgba(255, 250, 243, 0.4) 55%,
+    transparent 100%
+  );
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.rd-masthead-inner {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.rd-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--rd-ink);
+  font-variant: small-caps;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.rd-edition {
+  display: inline-block;
+  margin: 0.65rem 0 0;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--rd-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  text-transform: uppercase;
+  color: var(--rd-brand-deep);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    var(--rd-brand-soft) 100%
+  );
+  border: 1px solid rgba(154, 52, 18, 0.15);
+  border-radius: 999px;
+}
+
+.rd-date-line {
+  margin: 0.85rem 0 0;
+  font-size: 0.9rem;
+  font-family: var(--rd-sans);
+}
+
+.rd-dateline {
+  font-weight: 700;
+  color: var(--rd-accent-deep);
+  letter-spacing: 0.03em;
+}
+
+.rd-file-date {
+  font-weight: 500;
+  color: var(--rd-ink-soft);
+}
+
+.rd-rule-line {
+  height: 2px;
+  max-width: 11rem;
+  margin: 0 auto;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--rd-brand) 22%,
+    var(--rd-accent) 50%,
+    var(--rd-brand) 78%,
+    transparent 100%
+  );
+  opacity: 0.55;
+}
+
+.rd-main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.1rem 1.1rem 4rem;
+}
+
+.rd-stream {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+/* —— 卡片基底 —— */
+.rd-card {
+  position: relative;
+  margin: 0;
+  padding: 1.55rem 1.4rem 1.72rem;
+  background: var(--rd-card);
+  border: 1px solid var(--rd-rule);
+  border-radius: 14px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.88) inset,
+    0 2px 0 rgba(28, 23, 20, 0.03) inset,
+    0 16px 44px -24px rgba(28, 23, 20, 0.2);
+  scroll-margin-top: 1.25rem;
+}
+
+.rd-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(
+    180deg,
+    var(--rd-accent) 0%,
+    var(--rd-accent-deep) 100%
+  );
+  opacity: 0.88;
+}
+
+.rd-card-head {
+  position: relative;
+  padding-left: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.rd-card-head-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.rd-kicker {
+  margin: 0;
+  font-family: var(--rd-sans);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+}
+
+.rd-kicker--lead {
+  color: var(--rd-brand);
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+}
+
+.rd-kicker--focus {
+  color: var(--rd-accent-deep);
+}
+
+.rd-kicker--brief {
+  color: var(--rd-note-deep);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.rd-card-num {
+  flex-shrink: 0;
+  font-family: var(--rd-sans);
+  font-size: 0.64rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: var(--rd-ink-muted);
+}
+
+.rd-meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--rd-sans);
+}
+
+.rd-badge {
+  display: inline-block;
+  padding: 0.1rem 0.42rem;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  border: 1px solid var(--rd-rule);
+  line-height: 1.25;
+}
+
+.rd-badge--sev-high {
+  color: var(--rd-sev-high-fg);
+  border-color: var(--rd-sev-high-border);
+  background: var(--rd-sev-high-bg);
+}
+
+.rd-badge--sev-medium {
+  color: var(--rd-accent-deep);
+  border-color: rgba(180, 83, 9, 0.32);
+  background: var(--rd-accent-soft);
+}
+
+.rd-badge--sev-low {
+  color: var(--rd-ink-soft);
+  background: rgba(28, 23, 20, 0.04);
+  border-color: rgba(28, 23, 20, 0.08);
+}
+
+.rd-badge--type {
+  font-weight: 600;
+  color: var(--rd-ink-soft);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.rd-card-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 3.1vw, 1.4rem);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--rd-ink);
+}
+
+/* —— 头版 —— */
+.rd-card--lead {
+  padding: 1.9rem 1.55rem 2.05rem;
+  border-radius: 16px;
+  background: linear-gradient(
+      165deg,
+      var(--rd-card-warm) 0%,
+      var(--rd-card) 42%,
+      #fff5eb 100%
+    );
+  border-color: rgba(154, 52, 18, 0.14);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 2px 0 rgba(154, 52, 18, 0.04) inset,
+    0 22px 56px -30px rgba(28, 23, 20, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.rd-card--lead::before {
+  width: 5px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  border-radius: 0 5px 5px 0;
+  background: linear-gradient(
+    180deg,
+    var(--rd-brand) 0%,
+    var(--rd-accent) 48%,
+    var(--rd-accent-deep) 100%
+  );
+  opacity: 1;
+}
+
+.rd-card--lead .rd-card-title {
+  font-size: clamp(1.4rem, 3.9vw, 1.68rem);
+  line-height: 1.22;
+  letter-spacing: -0.022em;
+  color: var(--rd-ink);
+}
+
+.rd-card--lead .rd-card-num {
+  color: var(--rd-note);
+}
+
+/* —— 要闻 —— */
+.rd-card--focus {
+  padding: 1.58rem 1.42rem 1.78rem;
+  background: linear-gradient(
+    180deg,
+    #fcf9f5 0%,
+    var(--rd-card) 35%,
+    var(--rd-card) 100%
+  );
+  border-color: rgba(180, 83, 9, 0.1);
+}
+
+.rd-card--focus::before {
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--rd-accent-mid) 0%,
+    var(--rd-accent-deep) 100%
+  );
+}
+
+.rd-card--focus .rd-card-title {
+  font-size: clamp(1.26rem, 3.3vw, 1.48rem);
+  line-height: 1.26;
+}
+
+/* —— 简讯 —— */
+.rd-card--brief {
+  padding: 1.18rem 1.18rem 1.32rem;
+  background: var(--rd-card-muted);
+  border-color: rgba(28, 23, 20, 0.06);
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 10px 32px -22px rgba(28, 23, 20, 0.14);
+}
+
+.rd-card--brief::before {
+  width: 2px;
+  top: 1rem;
+  bottom: 1rem;
+  opacity: 0.5;
+  background: linear-gradient(
+    180deg,
+    var(--rd-note) 0%,
+    rgba(168, 162, 158, 0.25) 100%
+  );
+}
+
+.rd-card--brief .rd-card-head {
+  margin-bottom: 0.72rem;
+}
+
+.rd-card--brief .rd-card-title {
+  font-size: clamp(1.04rem, 2.5vw, 1.18rem);
+  font-weight: 700;
+  color: #3f3a36;
+}
+
+.rd-card--brief .rd-card-num {
+  font-size: 0.61rem;
+  color: var(--rd-note);
+}
+
+/* —— 正文 —— */
+.rd-card-body {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--rd-ink-body);
+  padding-top: 0.18rem;
+  border-top: 1px solid var(--rd-rule-inner);
+}
+
+.rd-card-body > :first-child {
+  margin-top: 0.88rem;
+}
+
+.rd-card-body--lead {
+  font-size: 1.04rem;
+  line-height: 1.8;
+  color: #2b2622;
+}
+
+.rd-card-body--lead > :first-child {
+  margin-top: 1rem;
+}
+
+.rd-card-body--brief {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #44403c;
+}
+
+.rd-card-body--brief > :first-child {
+  margin-top: 0.72rem;
+}
+
+.rd-card-body :is(h1, h2, h3, h4) {
+  margin: 1.12rem 0 0.42rem;
+  font-family: var(--rd-sans);
+  font-weight: 800;
+  color: var(--rd-accent-deep);
+}
+
+.rd-card-body--lead :is(h1, h2, h3, h4) {
+  margin-top: 1.22rem;
+  color: var(--rd-brand-deep);
+}
+
+.rd-card-body h3 {
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rd-accent-deep);
+}
+
+.rd-card-body p {
+  margin: 0.52rem 0;
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+.rd-card-body a {
+  color: var(--rd-accent-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: rgba(146, 64, 14, 0.45);
+}
+
+.rd-card-body a:hover {
+  color: var(--rd-brand);
+  text-decoration-color: rgba(154, 52, 18, 0.55);
+}
+
+.rd-card-body strong {
+  color: var(--rd-ink);
+  font-weight: 700;
+}
+
+.rd-card-body pre,
+.rd-card-body code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.82em;
+}
+
+.rd-card-body pre {
+  overflow-x: auto;
+  padding: 0.58rem 0.68rem;
+  background: rgba(28, 23, 20, 0.045);
+  border: 1px solid var(--rd-rule);
+  border-radius: 8px;
+}
+
+.rd-card-body code {
+  background: rgba(154, 52, 18, 0.07);
+  color: var(--rd-brand-deep);
+  padding: 0.05rem 0.26rem;
+  border-radius: 4px;
+}
+
+.rd-card-body blockquote {
+  margin: 0.75rem 0;
+  padding: 0.45rem 0 0.45rem 1rem;
+  border-left: 3px solid var(--rd-accent-soft);
+  color: var(--rd-ink-soft);
+  font-style: normal;
+}
+
+.rd-card-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px -8px rgba(28, 23, 20, 0.2);
+}
+
+/* 等级条与左侧装饰条并存时略让位 */
+.rd-sev-high {
+  box-shadow: inset 5px 0 0 0 #b91c1c;
+}
+
+.rd-sev-medium {
+  box-shadow: inset 4px 0 0 0 var(--rd-accent);
+}
+
+.rd-sev-low {
+  box-shadow: inset 2px 0 0 0 rgba(120, 113, 108, 0.35);
+}
+
+.rd-empty {
+  text-align: center;
+  font-style: italic;
+  padding: 3rem 1rem;
+  font-size: 1.04rem;
+  color: var(--rd-ink-soft);
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 16px;
+  }
+
+  .rd-main {
+    padding: 1.5rem 0.85rem 3rem;
+  }
+
+  .rd-stream {
+    gap: 1.8rem;
+  }
+
+  .rd-card,
+  .rd-card--lead,
+  .rd-card--focus {
+    padding: 1.22rem 1rem 1.32rem;
+  }
+
+  .rd-card-head-top {
+    flex-wrap: wrap;
+  }
+}

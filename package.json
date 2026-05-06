@@ -1,0 +1,20 @@
+{
+  "name": "new",
+  "private": true,
+  "description": "Workspace root: run Devpaper CLI without cd into devpaper/",
+  "scripts": {
+    "test": "npm test --prefix devpaper",
+    "devpaper": "node ./devpaper/src/cli.mjs",
+    "devpaper:sample": "node ./devpaper/scripts/generate-fictional-logs.mjs",
+    "dp:day": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --date",
+    "dp:day:bs": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --template broadsheet --date",
+    "dp:day:reader": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --template reader --date",
+    "dp:day:styles": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --date",
+    "dp:hub": "node ./devpaper/src/cli.mjs hub --logs ./devpaper/logs --out ./devpaper/dist",
+    "dp:all": "node ./devpaper/src/cli.mjs build --all --logs ./devpaper/logs --out ./devpaper/dist",
+    "dp:month": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --month",
+    "dp:week": "node ./devpaper/src/cli.mjs build --logs ./devpaper/logs --out ./devpaper/dist --week-of",
+    "dp:idx": "node ./devpaper/src/cli.mjs index --logs ./devpaper/logs --md",
+    "dp:demo": "node ./devpaper/scripts/demo-day.mjs"
+  }
+}

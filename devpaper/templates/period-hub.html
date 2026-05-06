@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{HUB_TITLE}} — Devpaper</title>
+  <style>{{INLINE_HUB_CSS}}</style>
+</head>
+<body class="dp-hub">
+  <header class="dp-hub-mast">
+    <h1>{{HUB_TITLE}}</h1>
+    {{HUB_MAST_EXTRA}}
+  </header>
+  <div class="dp-hub-layout">
+    <nav class="dp-hub-nav" id="dp-nav" aria-label="日期">{{NAV_BUTTONS}}</nav>
+    <div class="dp-hub-main">
+      <iframe
+        id="dp-day-frame"
+        class="dp-day-frame"
+        title="当日手记版式"
+        src="{{FIRST_IFRAME_SRC}}"
+      ></iframe>
+    </div>
+  </div>
+  <script>
+(function () {
+  var frame = document.getElementById("dp-day-frame");
+  var nav = document.getElementById("dp-nav");
+  if (!frame || !nav) return;
+  nav.addEventListener("click", function (ev) {
+    var btn = ev.target.closest(".dp-nav-btn");
+    if (!btn) return;
+    var src = btn.getAttribute("data-dp-src");
+    if (!src) return;
+    ev.preventDefault();
+    frame.src = src;
+    nav.querySelectorAll(".dp-nav-btn").forEach(function (b) {
+      b.classList.toggle("is-active", b === btn);
+    });
+  });
+})();
+  </script>
+</body>
+</html>

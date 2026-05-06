@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Devpaper — {{MASTHEAD_DATE}}</title>
+  <style>{{INLINE_CSS}}</style>
+</head>
+<body class="{{BODY_CLASS}}">
+  <header class="dp-masthead">
+    <div class="dp-masthead-inner">
+      <h1 class="dp-title">Devpaper</h1>
+      <p class="dp-date-line"><span class="dp-dateline">{{MASTHEAD_DATE}}</span>{{FILE_DATE_SECONDARY}}</p>
+    </div>
+  </header>
+  <div class="dp-rule-line" aria-hidden="true"></div>
+  <main class="dp-front-page">
+    {{ARTICLES}}
+  </main>
+</body>
+</html>

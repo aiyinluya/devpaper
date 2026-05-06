@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{PICKER_DATE}}</title>
+  <style>{{INLINE_PICKER_CSS}}</style>
+</head>
+<body class="dp-stylepicker">
+  <header class="dp-sp-bar" role="toolbar">
+    <span class="dp-sp-date" id="dp-sp-date">{{PICKER_DATE}}</span>
+    <label class="dp-sp-field">
+      <span class="dp-sp-sr">版式</span>
+      <select id="dp-sp-select" class="dp-sp-select" aria-label="版式">{{SELECT_OPTIONS}}</select>
+    </label>
+  </header>
+  <iframe
+    id="dp-sp-frame"
+    class="dp-sp-frame"
+    title="预览"
+    data-dp-default-src="{{FIRST_IFRAME_SRC}}"
+    src="about:blank"
+  ></iframe>
+  <script>
+(function () {
+  var frame = document.getElementById("dp-sp-frame");
+  var sel = document.getElementById("dp-sp-select");
+  if (!frame || !sel) return;
+  var STORAGE_KEY = "devpaper:lastTplFileToken";
+
+  function tokenFromSrc(v) {
+    if (!v) return null;
+    var m = String(v).match(/\.tpl-([^.]+)\.html/i);
+    return m ? m[1].toLowerCase() : null;
+  }
+
+  function pickInitialSrc() {
+    var def = frame.getAttribute("data-dp-default-src") || "";
+    try {
+      var tok = sessionStorage.getItem(STORAGE_KEY);
+      if (!tok) return def || (sel.options[0] && sel.options[0].value) || "";
+      for (var i = 0; i < sel.options.length; i++) {
+        var v = sel.options[i].value;
+        if (tokenFromSrc(v) === tok) return v;
+      }
+    } catch (e) {}
+    return def || (sel.options[0] && sel.options[0].value) || "";
+  }
+
+  function syncSelectToFrame(src) {
+    for (var j = 0; j < sel.options.length; j++) {
+      if (sel.options[j].value === src) {
+        sel.selectedIndex = j;
+        return;
+      }
+    }
+  }
+
+  var initial = pickInitialSrc();
+  if (initial) {
+    frame.src = initial;
+    syncSelectToFrame(initial);
+  }
+
+  sel.addEventListener("change", function () {
+    var v = sel.value;
+    if (!v) return;
+    frame.src = v;
+    var t = tokenFromSrc(v);
+    try {
+      if (t) sessionStorage.setItem(STORAGE_KEY, t);
+    } catch (e) {}
+  });
+})();
+  </script>
+</body>
+</html>

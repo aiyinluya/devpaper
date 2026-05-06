@@ -1,0 +1,185 @@
+/**
+ * 阅刊暗色：在 reader.css 之后加载，覆盖变量与少量硬编码浅色片段。
+ */
+body.rd-paper.rd-paper--night {
+  --rd-paper: #12141a;
+  --rd-paper-glow: #1a1d26;
+  --rd-card: #1a1e28;
+  --rd-card-warm: #222831;
+  --rd-card-muted: #151821;
+  --rd-ink: #f4f1ea;
+  --rd-ink-body: #e7e2d9;
+  --rd-ink-soft: #b9b3a8;
+  --rd-ink-muted: #8a8478;
+  --rd-rule: rgba(255, 255, 255, 0.08);
+  --rd-rule-inner: rgba(255, 255, 255, 0.07);
+  --rd-brand: #fb923c;
+  --rd-brand-deep: #fdba74;
+  --rd-brand-soft: rgba(251, 146, 60, 0.14);
+  --rd-accent: #fbbf24;
+  --rd-accent-deep: #fcd34d;
+  --rd-accent-mid: #f59e0b;
+  --rd-accent-soft: rgba(251, 191, 36, 0.18);
+  --rd-amber-glow: rgba(251, 191, 36, 0.12);
+  --rd-note: #78736a;
+  --rd-note-deep: #9c9588;
+  --rd-sev-high-fg: #fecaca;
+  --rd-sev-high-bg: rgba(248, 113, 113, 0.12);
+  --rd-sev-high-border: rgba(248, 113, 113, 0.35);
+  color-scheme: dark;
+}
+
+body.rd-paper.rd-paper--night {
+  color: var(--rd-ink-body);
+  background-color: var(--rd-paper);
+  background-image: radial-gradient(
+      ellipse 120% 80% at 50% -20%,
+      #1e2430 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 100% 0%,
+      rgba(251, 146, 60, 0.08) 0%,
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse 60% 45% at 0% 100%,
+      rgba(59, 130, 246, 0.06) 0%,
+      transparent 48%
+    );
+}
+
+body.rd-paper.rd-paper--night ::selection {
+  background: rgba(251, 191, 36, 0.28);
+  color: var(--rd-ink);
+}
+
+body.rd-paper.rd-paper--night .rd-masthead {
+  border-bottom-color: var(--rd-rule);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 34, 44, 0.95) 0%,
+    rgba(18, 20, 26, 0.5) 60%,
+    transparent 100%
+  );
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body.rd-paper.rd-paper--night .rd-title {
+  color: var(--rd-ink);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+body.rd-paper.rd-paper--night .rd-edition {
+  color: var(--rd-brand-deep);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    var(--rd-brand-soft) 100%
+  );
+  border-color: rgba(251, 146, 60, 0.28);
+}
+
+body.rd-paper.rd-paper--night .rd-rule-line {
+  opacity: 0.65;
+}
+
+body.rd-paper.rd-paper--night .rd-card {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 2px 0 rgba(0, 0, 0, 0.2) inset,
+    0 18px 48px -24px rgba(0, 0, 0, 0.55);
+}
+
+body.rd-paper.rd-paper--night .rd-badge--sev-medium {
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+body.rd-paper.rd-paper--night .rd-badge--sev-low {
+  color: var(--rd-ink-soft);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+body.rd-paper.rd-paper--night .rd-badge--type {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--rd-ink-soft);
+}
+
+body.rd-paper.rd-paper--night .rd-card--lead {
+  background: linear-gradient(
+    165deg,
+    var(--rd-card-warm) 0%,
+    var(--rd-card) 45%,
+    #1a2230 100%
+  );
+  border-color: rgba(251, 146, 60, 0.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 2px 0 rgba(251, 146, 60, 0.06) inset,
+    0 24px 56px -28px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+body.rd-paper.rd-paper--night .rd-card--focus {
+  background: linear-gradient(
+    180deg,
+    #1f242f 0%,
+    var(--rd-card) 40%,
+    var(--rd-card) 100%
+  );
+  border-color: rgba(251, 191, 36, 0.1);
+}
+
+body.rd-paper.rd-paper--night .rd-card--brief {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 10px 32px -20px rgba(0, 0, 0, 0.45);
+}
+
+body.rd-paper.rd-paper--night .rd-card--brief .rd-card-title {
+  color: var(--rd-ink-body);
+}
+
+body.rd-paper.rd-paper--night .rd-card--brief::before {
+  background: linear-gradient(
+    180deg,
+    var(--rd-note-deep) 0%,
+    rgba(120, 115, 106, 0.25) 100%
+  );
+}
+
+body.rd-paper.rd-paper--night .rd-card-body--lead {
+  color: #ebe6dc;
+}
+
+body.rd-paper.rd-paper--night .rd-card-body--brief {
+  color: #d4cfc4;
+}
+
+body.rd-paper.rd-paper--night .rd-card-body a {
+  text-decoration-color: rgba(252, 211, 77, 0.45);
+}
+
+body.rd-paper.rd-paper--night .rd-card-body a:hover {
+  text-decoration-color: rgba(251, 146, 60, 0.55);
+}
+
+body.rd-paper.rd-paper--night .rd-card-body pre {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: var(--rd-rule);
+}
+
+body.rd-paper.rd-paper--night .rd-card-body code {
+  background: rgba(251, 146, 60, 0.12);
+  color: var(--rd-brand-deep);
+}
+
+body.rd-paper.rd-paper--night .rd-card-body blockquote {
+  border-left-color: rgba(251, 191, 36, 0.35);
+}
+
+body.rd-paper.rd-paper--night .rd-card-body img {
+  box-shadow: 0 6px 28px -6px rgba(0, 0, 0, 0.55);
+}
+
+body.rd-paper.rd-paper--night .rd-sev-low {
+  box-shadow: inset 2px 0 0 0 rgba(255, 255, 255, 0.12);
+}

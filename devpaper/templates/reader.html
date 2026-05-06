@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {{RD_HEAD_EXTRA}}
+  <title>Devpaper — {{MASTHEAD_DATE}}</title>
+  <style>{{INLINE_CSS}}</style>
+</head>
+<body class="{{RD_BODY_CLASS}}">
+  <header class="rd-masthead">
+    <div class="rd-masthead-inner">
+      <h1 class="rd-title">Devpaper</h1>
+      <p class="rd-edition">{{RD_EDITION_LABEL}}</p>
+      <p class="rd-date-line">
+        <span class="rd-dateline">{{MASTHEAD_DATE}}</span>{{FILE_DATE_SECONDARY}}
+      </p>
+    </div>
+  </header>
+  <div class="rd-rule-line" aria-hidden="true"></div>
+  <main class="rd-main">
+    {{ARTICLES}}
+  </main>
+</body>
+</html>

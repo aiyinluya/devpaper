@@ -1,0 +1,39 @@
+# Monorepo root — 上传前保持工作区干净；生成物与依赖留在本机即可
+
+# 依赖（根目录若将来 `npm install` 也不会误提交）
+node_modules/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 日志与 npm 调试
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 本地打包产物（常在仓库根生成）
+*.tgz
+
+# 常见 IDE / 编辑器（团队若需共享 .vscode 可删下列一行）
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*~
+
+# 环境变量（勿把密钥推进 Git）
+.env
+.env.local
+.env.*.local
+
+# 覆盖率等（若以后加测试工具）
+coverage/
+.nyc_output/

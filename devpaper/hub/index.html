@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>手记控制台</title>
+  <style>
+    :root {
+      --h-ink: #14181f;
+      --h-muted: #5c6570;
+      --h-bg: #eceae6;
+      --h-surface: #fdfcfa;
+      --h-accent: #243a52;
+      --h-accent-soft: #3d5a80;
+      --h-ok: #0d6444;
+      --h-ok-bg: #b6e4c8;
+      --h-need: #b45309;
+      --h-need-bg: #ffedd5;
+      --h-no-note: #57534e;
+      --h-no-note-bg: #e7e5e4;
+      --h-range: #1d4ed8;
+      --h-range-bg: #bfdbfe;
+      --h-border: #e2ddd6;
+      --h-shadow: 0 1px 2px rgba(20, 24, 31, 0.06), 0 8px 24px rgba(20, 24, 31, 0.06);
+      --h-sans: "Segoe UI", system-ui, -apple-system, Roboto, "PingFang SC", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--h-sans);
+      color: var(--h-ink);
+      background: linear-gradient(165deg, #e8e6e2 0%, var(--h-bg) 45%, #e5e2dc 100%);
+      line-height: 1.5;
+      padding: 1.5rem 1rem 2.5rem;
+      min-height: 100vh;
+    }
+    .h-page {
+      max-width: 48rem;
+      margin-inline: auto;
+    }
+    .h-head {
+      margin-bottom: 0.85rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--h-ink);
+    }
+    .h-banner {
+      padding: 0.6rem 0.85rem;
+      background: #fff8e6;
+      border: 1px solid #e8d4a8;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      color: #5c4a21;
+      margin-bottom: 1rem;
+    }
+    .h-banner[hidden] { display: none !important; }
+    .h-banner code { font-size: 0.9em; background: rgba(255,255,255,.6); padding: 0.1em 0.35em; border-radius: 4px; }
+    .h-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem 0.85rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #2c2925;
+    }
+    .h-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .h-legend-inline {
+      margin: 0 0 0.65rem;
+      padding: 0.5rem 0.65rem;
+      background: linear-gradient(180deg, #f2eee8 0%, #e9e4dd 100%);
+      border: 1px solid #cfc7bc;
+      border-radius: 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .h-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(0,0,0,.12);
+    }
+    .h-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+    .h-toolbar button, .h-toolbar a.btn {
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid var(--h-border);
+      background: var(--h-surface);
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--h-ink);
+      box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+      transition: background 0.12s, border-color 0.12s, transform 0.08s;
+    }
+    .h-toolbar button.primary {
+      background: var(--h-accent);
+      color: #fff;
+      border-color: var(--h-accent);
+      box-shadow: none;
+    }
+    .h-toolbar button:disabled { opacity: 0.42; cursor: not-allowed; }
+    .h-toolbar button:hover:not(:disabled), .h-toolbar a.btn:hover {
+      background: #f4f2ef;
+      border-color: #cfc9c0;
+    }
+    .h-toolbar button.primary:hover:not(:disabled) {
+      background: var(--h-accent-soft);
+      border-color: var(--h-accent-soft);
+      filter: none;
+    }
+    .h-toolbar button:active:not(:disabled) { transform: scale(0.98); }
+    .h-shell {
+      background: var(--h-surface);
+      border: 1px solid var(--h-border);
+      border-radius: 14px;
+      padding: 1rem 1rem 1.1rem;
+      box-shadow: var(--h-shadow);
+      user-select: none;
+    }
+    .h-month-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+    .h-month-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+    .h-month-title {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .h-month-title--static {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--h-ink);
+    }
+    .h-month-title--link {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--h-accent-soft);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(61, 90, 128, 0.38);
+    }
+    .h-month-title--link:hover {
+      color: var(--h-accent);
+      border-bottom-color: var(--h-accent);
+    }
+    .h-month-row button {
+      font: inherit;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--h-border);
+      background: #f8f6f3;
+      cursor: pointer;
+      color: var(--h-ink);
+      font-size: 1rem;
+      line-height: 1;
+      transition: background 0.12s;
+    }
+    .h-month-row button:hover { background: #efede9; }
+    .h-cal {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .h-cal .h-dow {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 0.25rem 0 0.45rem;
+      color: var(--h-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .h-cal .h-dow.h-dow-end { color: #94a3b8; }
+    .h-cal .h-day {
+      min-height: 3.75rem;
+      background: #fff;
+      padding: 0.35rem 0.4rem;
+      font-size: 0.75rem;
+      position: relative;
+      border: 2px solid #d2cdc5;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color 0.12s, box-shadow 0.12s, background 0.12s;
+    }
+    .h-cal .h-day:not(.h-out):hover {
+      border-color: var(--h-accent-soft);
+      box-shadow: 0 2px 8px rgba(36, 58, 82, 0.08);
+    }
+    .h-cal .h-day.h-weekend:not(.h-out):not(.h-ok):not(.h-need):not(.h-no-note) {
+      background: #f3f0f7;
+    }
+    .h-cal .h-day.h-out {
+      background: transparent;
+      border-color: transparent;
+      border-width: 0;
+      color: #b0b4bb;
+      cursor: default;
+      min-height: 2.5rem;
+    }
+    .h-cal .h-day.h-ok {
+      background: var(--h-ok-bg);
+      border-color: var(--h-ok);
+      color: #0a3d26;
+    }
+    .h-cal .h-day.h-need {
+      background: var(--h-need-bg);
+      border-color: var(--h-need);
+      color: #7c2d12;
+    }
+    .h-cal .h-day.h-no-note {
+      background: var(--h-no-note-bg);
+      border-color: #a8a29e;
+      color: var(--h-no-note);
+    }
+    .h-cal .h-day.h-in-range {
+      background: var(--h-range-bg);
+      border-color: var(--h-range);
+    }
+    .h-cal .h-day.h-range-edge {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 5px var(--h-range);
+      border-color: var(--h-range);
+    }
+    .h-cal .h-day.h-no-md {
+      cursor: not-allowed;
+      opacity: 0.68;
+    }
+    .h-cal .h-day.h-no-md:hover {
+      border-color: #d2cdc5;
+      box-shadow: none;
+    }
+    .h-day-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.2rem; }
+    .h-day-num { font-weight: 600; font-size: 0.9375rem; color: var(--h-ink); }
+    .h-cal .h-day.h-out .h-day-num { font-weight: 500; color: #b0b4bb; }
+    .h-preview {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.35rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--h-accent);
+      background: rgba(36, 58, 82, 0.06);
+      border: none;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .h-preview:hover { background: rgba(36, 58, 82, 0.12); }
+    .h-err {
+      padding: 0.75rem 0.9rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      font-size: 0.8125rem;
+      margin-bottom: 0.85rem;
+      color: #991b1b;
+    }
+    .h-toast {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      max-width: 20rem;
+      padding: 0.55rem 0.85rem;
+      background: var(--h-ink);
+      color: #fff;
+      font-size: 0.8125rem;
+      border-radius: 10px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 9;
+      box-shadow: var(--h-shadow);
+    }
+    .h-toast.is-on { opacity: 1; }
+    .h-modal-root[hidden] { display: none !important; }
+    .h-modal-root:not([hidden]) {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .h-modal-scrim {
+      position: absolute;
+      inset: 0;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      background: rgba(20, 24, 31, 0.42);
+      backdrop-filter: blur(3px);
+    }
+    .h-modal-panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 22rem;
+      background: var(--h-surface);
+      border: 1px solid #c9c2b8;
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem 1rem;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.85) inset,
+        0 20px 50px rgba(20, 24, 31, 0.22);
+    }
+    .h-modal-title {
+      margin: 0 0 0.55rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--h-ink);
+      letter-spacing: -0.02em;
+    }
+    .h-modal-msg {
+      margin: 0 0 1.1rem;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      color: #3d4550;
+    }
+    .h-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .h-modal-actions button {
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid var(--h-border);
+      background: #f4f2ef;
+      color: var(--h-ink);
+      min-width: 4.5rem;
+    }
+    .h-modal-actions button:hover {
+      background: #ebe8e3;
+      border-color: #b8b0a6;
+    }
+    .h-modal-actions .h-modal-btn-primary {
+      background: var(--h-accent);
+      color: #fff;
+      border-color: var(--h-accent);
+    }
+    .h-modal-actions .h-modal-btn-primary:hover {
+      background: var(--h-accent-soft);
+      border-color: var(--h-accent-soft);
+    }
+  </style>
+</head>
+<body>
+  <div class="h-page">
+    <header class="h-head">
+      <h1>手记控制台</h1>
+    </header>
+
+    <div id="h-noapi" class="h-banner" hidden>
+      <strong>未连接本机手记服务</strong>，无法使用页内生成。请先在项目说明中启动「手记控制台」，再用浏览器通过控制台给出的地址打开本页；不要直接双击本地 HTML 文件打开。
+    </div>
+
+    <div id="h-err" class="h-err" hidden></div>
+
+    <div class="h-toolbar" id="h-actions">
+      <button type="button" id="h-refresh" title="同步月历与手记状态；编辑手记后请先点此刷新">刷新</button>
+      <button type="button" id="h-build-single" disabled title="为当前选中的日期生成报纸页；若该月还没有合刊导航，会自动补全">出单日</button>
+      <button type="button" id="h-build-month" disabled title="为当月已有手记的日期生成页面并更新合刊；完成后可通过月历上的「月刊」链接再次打开">整月合刊</button>
+      <button type="button" id="h-build-nav" class="primary" disabled title="为所选日期区间生成合刊导航，完成后在新标签页打开">出区间·合刊</button>
+    </div>
+
+    <div class="h-shell">
+      <div class="h-month-row">
+        <button type="button" id="h-prev" aria-label="上一月">‹</button>
+        <div class="h-month-center" id="h-month-title-wrap" aria-live="polite"></div>
+        <button type="button" id="h-next" aria-label="下一月">›</button>
+      </div>
+      <div class="h-legend h-legend-inline" aria-label="格子颜色含义">
+        <span><i class="h-dot" style="background:var(--h-ok-bg);border:2px solid var(--h-ok)"></i>已生成</span>
+        <span><i class="h-dot" style="background:var(--h-need-bg);border:2px solid var(--h-need)"></i>未生成</span>
+        <span><i class="h-dot" style="background:var(--h-no-note-bg);border:2px solid #a8a29e"></i>无手记</span>
+        <span><i class="h-dot" style="background:var(--h-range-bg);border:2px solid var(--h-range)"></i>选中</span>
+      </div>
+      <div class="h-cal" id="h-cal" aria-label="日历"></div>
+    </div>
+
+    <div id="h-toast" class="h-toast" role="status"></div>
+  </div>
+
+  <div id="h-modal-root" class="h-modal-root" hidden aria-hidden="true">
+    <button type="button" class="h-modal-scrim" id="h-modal-scrim" tabindex="-1" aria-label="关闭"></button>
+    <div class="h-modal-panel" role="dialog" aria-modal="true" aria-labelledby="h-modal-title">
+      <h2 class="h-modal-title" id="h-modal-title">请确认</h2>
+      <p class="h-modal-msg" id="h-modal-msg"></p>
+      <div class="h-modal-actions">
+        <button type="button" id="h-modal-cancel">取消</button>
+        <button type="button" class="h-modal-btn-primary" id="h-modal-ok">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+  var toastEl = document.getElementById("h-toast");
+  var errEl = document.getElementById("h-err");
+  var calEl = document.getElementById("h-cal");
+  var monthTitleWrap = document.getElementById("h-month-title-wrap");
+  var prevBtn = document.getElementById("h-prev");
+  var nextBtn = document.getElementById("h-next");
+  var noApiEl = document.getElementById("h-noapi");
+  var btnRefresh = document.getElementById("h-refresh");
+  var btnSingle = document.getElementById("h-build-single");
+  var btnNav = document.getElementById("h-build-nav");
+  var btnMonth = document.getElementById("h-build-month");
+  var modalRoot = document.getElementById("h-modal-root");
+  var modalMsg = document.getElementById("h-modal-msg");
+  var modalOk = document.getElementById("h-modal-ok");
+  var modalCancel = document.getElementById("h-modal-cancel");
+  var modalScrim = document.getElementById("h-modal-scrim");
+  var confirmResolver = null;
+
+  var stateMap = {};
+  var hasApi = false;
+  var pickA = null;
+  var pickB = null;
+  var view = new Date();
+  view.setDate(1);
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("is-on");
+    setTimeout(function () { toastEl.classList.remove("is-on"); }, 2800);
+  }
+
+  /** @param {string} message */
+  function hubConfirm(message) {
+    if (!modalRoot.hidden) return Promise.resolve(false);
+    return new Promise(function (resolve) {
+      confirmResolver = resolve;
+      modalMsg.textContent = message;
+      modalRoot.hidden = false;
+      modalRoot.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      function finish(result) {
+        if (modalRoot.hidden) return;
+        modalRoot.hidden = true;
+        modalRoot.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onKey);
+        modalOk.removeEventListener("click", onOk);
+        modalCancel.removeEventListener("click", onCancel);
+        modalScrim.removeEventListener("click", onCancel);
+        var r = confirmResolver;
+        confirmResolver = null;
+        if (r) r(result);
+      }
+      function onOk() {
+        finish(true);
+      }
+      function onCancel() {
+        finish(false);
+      }
+      function onKey(e) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          onCancel();
+        }
+      }
+      modalOk.addEventListener("click", onOk);
+      modalCancel.addEventListener("click", onCancel);
+      modalScrim.addEventListener("click", onCancel);
+      document.addEventListener("keydown", onKey);
+      setTimeout(function () {
+        modalOk.focus();
+      }, 0);
+    });
+  }
+
+  function showErr(msg) {
+    errEl.hidden = false;
+    errEl.textContent = msg;
+  }
+
+  function ymd(y, m, d) {
+    var mm = String(m + 1).padStart(2, "0");
+    var dd = String(d).padStart(2, "0");
+    return y + "-" + mm + "-" + dd;
+  }
+
+  function parseYmd(s) {
+    var p = s.split("-");
+    if (p.length !== 3) return null;
+    return { y: +p[0], m: +p[1] - 1, d: +p[2] };
+  }
+
+  /** @param {string} ym `YYYY-MM` */
+  function monthYmToZh(ym) {
+    var p = ym.split("-");
+    if (p.length !== 2) return ym;
+    return p[0] + " 年 " + parseInt(p[1], 10) + " 月";
+  }
+
+  function cmpIso(a, b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  }
+
+  function orderedRange() {
+    if (!pickA) return null;
+    if (!pickB) return { lo: pickA, hi: pickA, days: 1 };
+    var lo = cmpIso(pickA, pickB) <= 0 ? pickA : pickB;
+    var hi = cmpIso(pickA, pickB) <= 0 ? pickB : pickA;
+    var n = 0;
+    var cur = parseYmd(lo);
+    var end = parseYmd(hi);
+    if (!cur || !end) return { lo: lo, hi: hi, days: 1 };
+    var t = new Date(cur.y, cur.m, cur.d);
+    var t2 = new Date(end.y, end.m, end.d);
+    while (t <= t2) {
+      n++;
+      t.setDate(t.getDate() + 1);
+    }
+    return { lo: lo, hi: hi, days: n };
+  }
+
+  function inSelectedRange(iso) {
+    var r = orderedRange();
+    if (!r) return false;
+    return cmpIso(iso, r.lo) >= 0 && cmpIso(iso, r.hi) <= 0;
+  }
+
+  function isRangeEdge(iso) {
+    var r = orderedRange();
+    if (!r || !pickB) return false;
+    return iso === r.lo || iso === r.hi;
+  }
+
+  function updateActionButtons() {
+    btnSingle.disabled = !hasApi || !pickA;
+    btnNav.disabled = !hasApi || !pickA || !pickB;
+    btnMonth.disabled = !hasApi;
+  }
+
+  function cellState(iso) {
+    return stateMap[iso] || { hasMd: false, hasHtml: false };
+  }
+
+  function pathDist(seg) {
+    return (hasApi ? "/dist/" : "../dist/") + seg;
+  }
+
+  function updateMonthTitle() {
+    if (!monthTitleWrap) return;
+    var y = view.getFullYear();
+    var m = view.getMonth();
+    var ym = y + "-" + String(m + 1).padStart(2, "0");
+    var hasIndex = !!monthNavAvailable[ym];
+    monthTitleWrap.textContent = "";
+    if (hasIndex) {
+      var a = document.createElement("a");
+      a.className = "h-month-title h-month-title--link";
+      a.href = pathDist(ym + "/index.html");
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = ym + " 月刊";
+      a.title = "打开已生成的当月合刊导航；若内容已是最新，无需再点「整月合刊」";
+      monthTitleWrap.appendChild(a);
+    } else {
+      var s = document.createElement("span");
+      s.className = "h-month-title h-month-title--static";
+      s.textContent = y + "年" + (m + 1) + "月";
+      monthTitleWrap.appendChild(s);
+    }
+  }
+
+  function render() {
+    var y = view.getFullYear();
+    var m = view.getMonth();
+
+    var firstDow = new Date(y, m, 1).getDay();
+    var lastDate = new Date(y, m + 1, 0).getDate();
+    var prevLast = new Date(y, m, 0).getDate();
+
+    calEl.innerHTML = "";
+    var dows = ["日", "一", "二", "三", "四", "五", "六"];
+    for (var i = 0; i < 7; i++) {
+      var hd = document.createElement("div");
+      hd.className = "h-dow" + (i === 0 || i === 6 ? " h-dow-end" : "");
+      hd.textContent = dows[i];
+      calEl.appendChild(hd);
+    }
+
+    var startPad = firstDow;
+    for (var c = 0; c < 42; c++) {
+      var cell = document.createElement("div");
+      cell.className = "h-day";
+      var cy = y;
+      var cm = m;
+      var dayNum;
+      if (c < startPad) {
+        dayNum = prevLast - startPad + c + 1;
+        var pm = m === 0 ? 11 : m - 1;
+        var py = m === 0 ? y - 1 : y;
+        cy = py;
+        cm = pm;
+        cell.classList.add("h-out");
+      } else if (c - startPad < lastDate) {
+        dayNum = c - startPad + 1;
+      } else {
+        dayNum = c - startPad - lastDate + 1;
+        var nm = m === 11 ? 0 : m + 1;
+        var ny = m === 11 ? y + 1 : y;
+        cy = ny;
+        cm = nm;
+        cell.classList.add("h-out");
+      }
+      var iso = ymd(cy, cm, dayNum);
+      cell.dataset.iso = iso;
+      var wk = new Date(cy, cm, dayNum).getDay();
+      if ((wk === 0 || wk === 6) && !cell.classList.contains("h-out")) cell.classList.add("h-weekend");
+
+      var st = cellState(iso);
+      if (!cell.classList.contains("h-out")) {
+        if (st.hasMd && st.hasHtml) {
+          cell.classList.add("h-ok");
+        } else if (st.hasMd && !st.hasHtml) {
+          cell.classList.add("h-need");
+        } else {
+          cell.classList.add("h-no-note");
+          cell.classList.add("h-no-md");
+        }
+      }
+      if (inSelectedRange(iso) && !cell.classList.contains("h-out")) {
+        cell.classList.add("h-in-range");
+        if (isRangeEdge(iso)) cell.classList.add("h-range-edge");
+      }
+
+      var top = document.createElement("div");
+      top.className = "h-day-top";
+      var num = document.createElement("span");
+      num.className = "h-day-num";
+      num.textContent = String(dayNum);
+      top.appendChild(num);
+      if (st.hasMd && st.hasHtml && !cell.classList.contains("h-out")) {
+        var pv = document.createElement("a");
+        pv.className = "h-preview";
+        pv.href = pathDist(st.htmlRel || iso + ".html");
+        pv.target = "_blank";
+        pv.rel = "noopener";
+        pv.textContent = "↗";
+        pv.title = "新标签打开 " + iso;
+        pv.addEventListener("click", function (e) { e.stopPropagation(); });
+        top.appendChild(pv);
+      }
+      cell.appendChild(top);
+      calEl.appendChild(cell);
+    }
+    updateActionButtons();
+    updateMonthTitle();
+  }
+
+  calEl.addEventListener("click", function (ev) {
+    var cell = ev.target.closest(".h-day");
+    if (!cell || cell.classList.contains("h-out")) return;
+    if (ev.target.closest("a.h-preview")) return;
+    var iso = cell.dataset.iso;
+    if (!iso) return;
+    if (!cellState(iso).hasMd) return;
+
+    if (!pickA) {
+      pickA = iso;
+      pickB = null;
+    } else if (!pickB) {
+      if (iso === pickA) {
+        pickA = null;
+        pickB = null;
+      } else {
+        pickB = iso;
+      }
+    } else {
+      if (iso === pickA || iso === pickB) {
+        pickA = null;
+        pickB = null;
+      } else {
+        pickA = iso;
+        pickB = null;
+      }
+    }
+    render();
+  });
+
+  var monthNavAvailable = /** @type {Record<string, boolean>} */ ({});
+
+  function applySnap(snap) {
+    stateMap = snap.dates || {};
+    monthNavAvailable = snap.monthNavAvailable || {};
+  }
+
+  function postJson(url, body) {
+    return fetch(url, {
+      method: "POST",
+      cache: "no-store",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+    }).then(function (r) { return r.json(); });
+  }
+
+  function wireActions() {
+    btnRefresh.addEventListener("click", function () {
+      btnRefresh.disabled = true;
+      fetch("/api/calendar", { cache: "no-store" })
+        .then(function (r) { return r.json(); })
+        .then(function (snap) {
+          applySnap(snap);
+          toast("月历已刷新");
+          render();
+        })
+        .catch(function (e) { toast(String(e.message || e)); })
+        .finally(function () { btnRefresh.disabled = false; });
+    });
+    btnSingle.addEventListener("click", function () {
+      if (!pickA) return;
+      btnSingle.disabled = true;
+      postJson("/api/build-day", { date: pickA })
+        .then(function (j) {
+          if (!j.ok) throw new Error(j.error || "失败");
+          if (j.calendar) applySnap(j.calendar);
+          toast("「" + pickA + "」已生成");
+          render();
+        })
+        .catch(function (e) { toast(String(e.message || e)); })
+        .finally(function () { btnSingle.disabled = false; });
+    });
+    btnNav.addEventListener("click", function () {
+      var r = orderedRange();
+      if (!r || !pickB) return;
+      btnNav.disabled = true;
+      postJson("/api/build-period-nav", { from: r.lo, to: r.hi })
+        .then(function (j) {
+          if (!j.ok) throw new Error(j.error || "失败");
+          if (j.calendar) applySnap(j.calendar);
+          var u = j.indexUrl || "";
+          var psk = j.periodSkippedDays | 0;
+          toast(psk > 0 ? "已生成导航包（已跳过 " + psk + " 个无手记日）" : "已生成导航包");
+          if (u) window.open(u, "_blank", "noopener");
+          render();
+        })
+        .catch(function (e) { toast(String(e.message || e)); })
+        .finally(function () { btnNav.disabled = false; });
+    });
+    btnMonth.addEventListener("click", function () {
+      var y = view.getFullYear();
+      var mo = String(view.getMonth() + 1).padStart(2, "0");
+      var month = y + "-" + mo;
+      hubConfirm("将为「" + monthYmToZh(month) + "」生成整月合刊，并在新标签页打开导航。确定要继续吗？").then(function (ok) {
+        if (!ok) return;
+        btnMonth.disabled = true;
+        postJson("/api/build-month", { month: month })
+          .then(function (j) {
+            if (!j.ok) throw new Error(j.error || "失败");
+            if (j.calendar) applySnap(j.calendar);
+            var skip = j.monthSkippedDays | 0;
+            toast(
+              skip > 0
+                ? "月刊已生成（已跳过 " + skip + " 个无手记日）"
+                : "月刊已生成"
+            );
+            window.open(pathDist(month + "/index.html"), "_blank", "noopener");
+            render();
+          })
+          .catch(function (e) { toast(String(e.message || e)); })
+          .finally(function () { btnMonth.disabled = false; });
+      });
+    });
+  }
+
+  function disableActionsForStatic() {
+    [btnRefresh, btnSingle, btnNav, btnMonth].forEach(function (b) {
+      b.disabled = true;
+    });
+  }
+
+  prevBtn.addEventListener("click", function () {
+    view.setMonth(view.getMonth() - 1);
+    render();
+  });
+  nextBtn.addEventListener("click", function () {
+    view.setMonth(view.getMonth() + 1);
+    render();
+  });
+
+  function jumpMonthFromIndex(data) {
+    if (!data || !data.entries) return;
+    var latest = null;
+    for (var i = 0; i < data.entries.length; i++) {
+      var d = data.entries[i].date;
+      if (d && (!latest || d > latest)) latest = d;
+    }
+    if (latest) {
+      var p = parseYmd(latest);
+      if (p) view = new Date(p.y, p.m, 1);
+    }
+  }
+
+  fetch("/api/calendar", { cache: "no-store" })
+    .then(function (r) {
+      if (!r.ok) throw new Error("no");
+      return r.json();
+    })
+    .then(function (snap) {
+      applySnap(snap);
+      hasApi = true;
+      noApiEl.hidden = true;
+      wireActions();
+      return fetch("/logs/index.json", { cache: "no-store" });
+    })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      jumpMonthFromIndex(data);
+      render();
+    })
+    .catch(function () {
+      hasApi = false;
+      noApiEl.hidden = false;
+      disableActionsForStatic();
+      return fetch("../logs/hub-calendar.json?v=" + Date.now(), { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("找不到月历数据，请确认已运行索引生成或从本机服务打开本页");
+          return r.json();
+        })
+        .then(function (snap) {
+          applySnap(snap);
+          return fetch("../logs/index.json?v=" + Date.now(), { cache: "no-store" });
+        })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          jumpMonthFromIndex(data);
+          render();
+        });
+    })
+    .catch(function (e) {
+      showErr(String(e.message || e));
+    });
+})();
+  </script>
+</body>
+</html>

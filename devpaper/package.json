@@ -1,0 +1,58 @@
+{
+  "name": "devpaper",
+  "version": "0.1.0",
+  "description": "用 Cursor Rule + 包内文档在 AI 解题时结构化记录，再用 CLI 生成报纸风 HTML 日报",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test test/**/*.test.mjs",
+    "devpaper": "node ./src/cli.mjs",
+    "html:day": "node ./src/cli.mjs build --logs ./logs --out ./dist --date",
+    "html:day:bs": "node ./src/cli.mjs build --logs ./logs --out ./dist --template broadsheet --date",
+    "html:day:reader": "node ./src/cli.mjs build --logs ./logs --out ./dist --template reader --date",
+    "html:day:reader-night": "node ./src/cli.mjs build --logs ./logs --out ./dist --template reader-night --date",
+    "html:day:styles": "node ./src/cli.mjs build --logs ./logs --out ./dist --date",
+    "hub": "node ./src/cli.mjs hub --logs ./logs --out ./dist",
+    "html:all": "node ./src/cli.mjs build --all --logs ./logs --out ./dist",
+    "html:month": "node ./src/cli.mjs build --logs ./logs --out ./dist --month",
+    "html:week": "node ./src/cli.mjs build --logs ./logs --out ./dist --week-of",
+    "idx": "node ./src/cli.mjs index --logs ./logs --md",
+    "build:html": "node ./src/cli.mjs build --all --logs ./logs --out ./dist",
+    "build:index": "node ./src/cli.mjs index --logs ./logs --md",
+    "sample:logs": "node ./scripts/generate-fictional-logs.mjs"
+  },
+  "bin": {
+    "devpaper": "./src/cli.mjs"
+  },
+  "files": [
+    "src",
+    "assets",
+    "templates",
+    "hub",
+    "test",
+    "scripts",
+    "docs/log-authoring-guide.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "marked": "^15.0.7"
+  },
+  "keywords": [
+    "cursor",
+    "skill",
+    "ai",
+    "developer-diary",
+    "html",
+    "newspaper"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aiyinluya/devpaper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aiyinluya/devpaper/issues"
+  },
+  "homepage": "https://github.com/aiyinluya/devpaper#readme"
+}
