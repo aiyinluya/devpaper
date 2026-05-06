@@ -11,7 +11,7 @@
 
 ## 如何验证
 
-- [ ] 已本地执行 `npm test`（在 `devpaper/` 或仓库根）
+- [ ] 已本地执行 `npm test`（仓库根）
 
 ## 关联 Issue
 

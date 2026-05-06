@@ -20,7 +20,7 @@ import {
   weekBoundsContaining,
 } from "./range.mjs";
 
-/** 默认相对「本包根目录」，避免在 devpaper/ 内执行时误解析成 devpaper/devpaper/logs */
+/** 默认相对「本包根目录」（`paths.mjs` 解析），避免 cwd 误当成包根 */
 const DEFAULT_LOGS = path.join(PKG_ROOT, "logs");
 const DEFAULT_OUT = path.join(PKG_ROOT, "dist");
 
@@ -40,8 +40,8 @@ function printHelp() {
 默认 --logs / --out 为本包目录下 logs、dist（与当前工作目录无关）；可用参数覆盖。
 
 路径注意:
-  · 当前目录已在 devpaper/ 包内时，请用: node src/cli.mjs … 或 npm run html:day -- 日期
-  · 勿写成 node devpaper/src/cli.mjs（会拼成 devpaper/devpaper/… 报错）
+  · 在包根请用: node src/cli.mjs … 或 npm run html:day -- 日期
+  · 勿在已是包根时再套一层 devpaper/ 前缀路径（旧 monorepo 习惯）
 
 说明:
   · 单日 md 里可写多篇 ##，会排进同一期 HTML。
@@ -52,7 +52,7 @@ function printHelp() {
   · 自定义版式壳：templates/user/<id>.html + assets/user/<id>.css（见 templates/user/README.md）。
   · --month / --week-of / --from+--to：各日 HTML 写入 --out 下 **YYYY-MM** 子目录；导航 index.html 写在对应 **起始日所在月**（整月为该月；区间为 --from 所在月；周为周一所在月）。不再使用 dist 根目录散装日报文件。
 
-在 devpaper 目录下的短命令（见 package.json）:
+在包根目录下的短命令（见 package.json）:
   npm run html:day -- 2026-03-06       单日（版式页 + tpl-*）
   npm run html:all                    全部有日志的日
   npm run html:month -- 2026-04       自然月
@@ -62,7 +62,7 @@ function printHelp() {
   npm run hub                         本地手记控制台（127.0.0.1，含月历与一键生成 API）
   npm test                            运行单测（node:test）
 
-仓库根另有 npm run dp:demo：在 devpaper/.demo-* 生成隔离演示 HTML，不写入真实 logs/。
+仓库根另有 npm run dp:demo：在 .demo-* 目录生成隔离演示 HTML，不写入真实 logs/。
 
 index 子命令会扫描 logs 下所有 YYYY-MM-DD.md，写入 index.json；加 --md 同时生成 INDEX.md；并写入 logs/hub-calendar.json（扫描 dist 下 YYYY-MM 与旧版 month-* / range-* / week-* 内各日版式页）。
 `);

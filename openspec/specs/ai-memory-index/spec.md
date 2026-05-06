@@ -2,7 +2,7 @@
 
 ## Purpose
 
-约定 **`devpaper index`** 从 `logs/*.md` 生成 **`index.json`**（机器可读记忆索引）、可选 **`INDEX.md`**（人类扫读表），以及 **`logs/hub-calendar.json`**（Hub 月历与「是否已生成 HTML」状态）。索引默认与 `build` 产物的路径约定一致：**`htmlFile` 为相对 `dist` 的路径 `YYYY-MM/YYYY-MM-DD.html`**。实现主路径为 `devpaper/src/index-build.mjs`、`devpaper/src/cli.mjs`；Hub 快照扫描 MAY 兼容旧版 `month-*` / `range-*` / `week-*` 目录中的版式页。
+约定 **`devpaper index`** 从 `logs/*.md` 生成 **`index.json`**（机器可读记忆索引）、可选 **`INDEX.md`**（人类扫读表），以及 **`logs/hub-calendar.json`**（Hub 月历与「是否已生成 HTML」状态）。索引默认与 `build` 产物的路径约定一致：**`htmlFile` 为相对 `dist` 的路径 `YYYY-MM/YYYY-MM-DD.html`**。实现主路径为 `src/index-build.mjs`、`src/cli.mjs`；Hub 快照扫描 MAY 兼容旧版 `month-*` / `range-*` / `week-*` 目录中的版式页。
 
 ## Requirements
 

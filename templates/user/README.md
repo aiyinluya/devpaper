@@ -1,6 +1,6 @@
 # 自定义报纸壳（可选）
 
-与默认 **`devpaper build …`** 配合：在此目录放置 **`{id}.html`**，并在 **`devpaper/assets/user/{id}.css`** 放置同名样式，构建后会出现在各日 **`YYYY-MM-DD.html`** 顶栏的**版式下拉框**里（与各 `tpl-<id>.html` 对应）。
+与默认 **`devpaper build …`**（CLI）配合：在此目录放置 **`{id}.html`**，并在 **`assets/user/{id}.css`** 放置同名样式，构建后会出现在各日 **`YYYY-MM-DD.html`** 顶栏的**版式下拉框**里（与各 `tpl-<id>.html` 对应）。
 
 ## 占位符（与内置 `newspaper` 相同）
 

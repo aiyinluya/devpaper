@@ -2,7 +2,7 @@
 
 ## Purpose
 
-约定 **按日落盘的 Markdown 手记** 的文件名、文章切分、标题 slug、指纹与可选元数据（刊位、等级、类型），使 **同一套解析** 同时服务于 HTML 构建与 `index.json` 索引。默认路径为包内 `logs/YYYY-MM-DD.md`（monorepo 下常为 `devpaper/logs/`）。人类撰写与 **Cursor Rule**（`.cursor/rules/devpaper-log.mdc`）+ **`devpaper/docs/log-authoring-guide.md`** 对齐；能力 ID `daily-log` 为规格名，不要求目录名含 daily-log。
+约定 **按日落盘的 Markdown 手记** 的文件名、文章切分、标题 slug、指纹与可选元数据（刊位、等级、类型），使 **同一套解析** 同时服务于 HTML 构建与 `index.json` 索引。默认路径为包内 `logs/YYYY-MM-DD.md`。人类撰写与 **Cursor Rule**（`.cursor/rules/devpaper-log.mdc`）+ **`docs/log-authoring-guide.md`** 对齐；能力 ID `daily-log` 为规格名，不要求目录名含 daily-log。
 
 ## Requirements
 

@@ -3,10 +3,10 @@
 ## 本地环境
 
 - Node.js **≥ 18**（与 [package.json](package.json) `engines` 一致）。
-- 在 **`devpaper/`** 目录执行 **`npm install`**。
+- 在**仓库根**执行 **`npm install`**。
 - 修改 `src/`、`templates/`、`assets/`、`hub/` 后请运行 **`npm test`**；提交前确保单测通过。
 
-仓库根目录也可执行 **`npm test`**（等价于 `npm test --prefix devpaper`）。
+CI 与本地均在仓库根执行 **`npm test`**。
 
 ## 目录约定
 
@@ -33,4 +33,4 @@
 ## 规范
 
 - 与手记相关的 Cursor 规则见仓库根 `.cursor/rules/devpaper-log.mdc`；完整格式见 [docs/log-authoring-guide.md](docs/log-authoring-guide.md)。
-- 对 CLI 行为的约定变更，请同步更新 [README.md](README.md)、**`../openspec/specs/`** 中对应能力，以及 [`../openspec/README.md`](../openspec/README.md) 所描述流程下的变更目录（若适用）。
+- 对 CLI 行为的约定变更，请同步更新 [README.md](README.md)、**`openspec/specs/`** 中对应能力，以及 [`openspec/README.md`](openspec/README.md) 所描述流程下的变更目录（若适用）。

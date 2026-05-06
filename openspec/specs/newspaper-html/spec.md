@@ -2,7 +2,7 @@
 
 ## Purpose
 
-约定 **Node CLI `devpaper build`** 从 `logs/*.md` 生成 **静态报纸风 HTML**（含多版式、多期导航、可选 Hub），以及 **`devpaper hub`** 本机控制台。输出目录默认为本包 `dist/`，且 **各日版式文件写入 `dist/YYYY-MM/`**（ISO 月目录名），与月刊导航 `index.html` 同层或跨月相对链接；**不再**在 `dist/` 根目录散装 `YYYY-MM-DD.html`（实现 MAY 清理历史散装文件）。实现主路径为 `devpaper/src/build.mjs`、`devpaper/src/cli.mjs`、`templates/`、`assets/`、`hub/`。
+约定 **Node CLI `devpaper build`** 从 `logs/*.md` 生成 **静态报纸风 HTML**（含多版式、多期导航、可选 Hub），以及 **`devpaper hub`** 本机控制台。输出目录默认为本包 `dist/`，且 **各日版式文件写入 `dist/YYYY-MM/`**（ISO 月目录名），与月刊导航 `index.html` 同层或跨月相对链接；**不再**在 `dist/` 根目录散装 `YYYY-MM-DD.html`（实现 MAY 清理历史散装文件）。实现主路径为 `src/build.mjs`、`src/cli.mjs`、`templates/`、`assets/`、`hub/`。
 
 ## Requirements
 

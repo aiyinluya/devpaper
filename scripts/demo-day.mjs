@@ -1,5 +1,5 @@
 /**
- * 在隔离目录生成一页演示 HTML（不写真实 devpaper/logs）。
+ * 在隔离目录生成一页演示 HTML（不写真实 logs/）。
  * 仓库根：npm run dp:demo
  */
 import fs from "node:fs/promises";

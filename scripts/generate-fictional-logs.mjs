@@ -1,6 +1,6 @@
 /**
  * 批量生成虚构 bug 手记（仅演示）。
- * 运行：node devpaper/scripts/generate-fictional-logs.mjs
+ * 运行：node scripts/generate-fictional-logs.mjs（仓库根）
  */
 import fs from "node:fs/promises";
 import path from "node:path";

@@ -1,29 +1,22 @@
-# 云端回归：不表示多平台交付承诺，仅单 Job 跑 devpaper 单测。
+# 云端回归：单 Job 跑 npm test（仓库根即 devpaper 包根）。
 name: devpaper CI
 
 on:
   push:
-    paths:
-      - "devpaper/**"
-      - ".github/workflows/devpaper-ci.yml"
+    branches: [main, master]
   pull_request:
-    paths:
-      - "devpaper/**"
-      - ".github/workflows/devpaper-ci.yml"
+    branches: [main, master]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: devpaper
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: devpaper/package-lock.json
+          cache-dependency-path: package-lock.json
       - name: Install
         run: npm ci
       - name: Test

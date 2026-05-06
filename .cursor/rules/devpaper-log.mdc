@@ -1,5 +1,5 @@
 ---
-description: 非平凡排错或方案落地后写入 devpaper 按日手记，并提醒更新索引/HTML
+description: 非平凡排错或方案落地后写入按日手记，并提醒更新索引/HTML
 alwaysApply: true
 ---
 
@@ -11,18 +11,18 @@ alwaysApply: true
 
 ## 写哪里
 
-- 路径：`devpaper/logs/YYYY-MM-DD.md`（日期取用户语境中的「当天」；无则创建，首行可 `# YYYY-MM-DD`）。
+- 路径：`logs/YYYY-MM-DD.md`（日期取用户语境中的「当天」；无则创建，首行可 `# YYYY-MM-DD`）。
 
 ## 格式
 
 - 标题行尽量：`## HH:MM · kebab-slug — 短标题`。
 - **指纹**（短代号，便于 `index.json` 聚类）：`**指纹**：a, b` 或 `指纹：a, b`。
-- 可选：**刊位**（头版/要闻/简讯）、**等级**、**类型**、正文 `#tag`；**完整骨架、字段说明与可复制模板**见包内 **[devpaper/docs/log-authoring-guide.md](devpaper/docs/log-authoring-guide.md)**（npm 包与 Git 克隆路径一致；正文语言不限，元数据键名可与解析器一致）。
+- 可选：**刊位**（头版/要闻/简讯）、**等级**、**类型**、正文 `#tag`；**完整骨架、字段说明与可复制模板**见包内 **[docs/log-authoring-guide.md](docs/log-authoring-guide.md)**（npm 包与 Git 克隆路径一致；正文语言不限，元数据键名可与解析器一致）。
 
 ## 收尾
 
-- 建议提醒或代为执行：仓库根 `npm run dp:idx`；单日 HTML `npm run dp:day -- YYYY-MM-DD`。已在 `devpaper/` 目录内用 `npm run idx`、`npm run html:day -- …`。
-- **勿**在 cwd 已是 `devpaper/` 时再使用 `node devpaper/src/cli.mjs`（会拼成 `devpaper/devpaper/…`）。
+- 建议提醒或代为执行：仓库根 `npm run dp:idx`；单日 HTML `npm run dp:day -- YYYY-MM-DD`。在包根目录也可用 `npm run idx`、`npm run html:day -- …`。
+- **勿**在 cwd 已是仓库根时再写 `node devpaper/src/cli.mjs`（旧 monorepo 路径；本仓库根应使用 `node src/cli.mjs` 或 `npm run dp:*`）。
 
 ## 禁止
 

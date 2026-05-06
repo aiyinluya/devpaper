@@ -1,7 +1,23 @@
-# Monorepo root — 上传前保持工作区干净；生成物与依赖留在本机即可
+# Devpaper 仓库根 — 依赖、生成物、本机文件
 
-# 依赖（根目录若将来 `npm install` 也不会误提交）
+# 依赖
 node_modules/
+
+# 包内构建与索引生成物（保留本机即可，不必删）
+dist/
+logs/index.json
+logs/INDEX.md
+logs/hub-calendar.json
+.demo-logs/
+.demo-out/
+
+# docs-local：补充说明；部分文件跟踪，其余忽略
+docs-local/*
+!docs-local/README.md
+!docs-local/默认路径与用户场景.md
+!docs-local/a11y-检查清单.md
+!docs-local/内容与安全假设.md
+!docs-local/logs与dist备份说明.md
 
 # 操作系统
 .DS_Store
@@ -16,10 +32,10 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# 本地打包产物（常在仓库根生成）
+# 本地打包产物
 *.tgz
 
-# 常见 IDE / 编辑器（团队若需共享 .vscode 可删下列一行）
+# 常见 IDE / 编辑器
 .idea/
 .vscode/
 *.suo
@@ -29,11 +45,11 @@ pnpm-debug.log*
 *.swp
 *~
 
-# 环境变量（勿把密钥推进 Git）
+# 环境变量
 .env
 .env.local
 .env.*.local
 
-# 覆盖率等（若以后加测试工具）
+# 覆盖率等
 coverage/
 .nyc_output/

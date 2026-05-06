@@ -1,6 +1,6 @@
 # Devpaper log authoring guide
 
-This document is the **authoritative reference** for log entry format and metadata. The path is the same whether you **clone the repo** or install via **`npm install devpaper`**: `docs/log-authoring-guide.md` (relative to the `devpaper` package root). The Cursor rule at the repo root (`.cursor/rules/devpaper-log.mdc`) only states *when*, *where*, and *wrap-up* reminders; **templates, field semantics, and copy-paste skeleton live here**.
+This document is the **authoritative reference** for log entry format and metadata. The path is the same whether you **clone this repo** or install via **`npm install devpaper`**: `docs/log-authoring-guide.md` (relative to the **package root**). The Cursor rule (`.cursor/rules/devpaper-log.mdc`) only states *when*, *where*, and *wrap-up* reminders; **templates, field semantics, and copy-paste skeleton live here**.
 
 Log bodies are often written in Chinese (or any human language); **metadata keys** in entries may use the Chinese labels below so they match the HTML/index parsers.
 
@@ -19,7 +19,7 @@ Before the end of the current session, add an entry to **today’s** log (skip i
 
 ## Where to write
 
-- Default: `devpaper/logs/YYYY-MM-DD.md` (use the **session’s “today”**; if `devpaper` lives under another root, follow the agreed `logs` path).
+- Default: `logs/YYYY-MM-DD.md` (use the **session’s “today”**; if your project uses another `logs` directory by convention, follow that path).
 - If the day file does not exist: create it; the first line may be `# YYYY-MM-DD` as a masthead.
 
 ---
@@ -76,22 +76,21 @@ In the body, `#tag` is supported (must start with a letter, at least 2 character
 
 ## After writing (index and HTML)
 
-**Inside `devpaper/`:** `node src/cli.mjs` / `npm run idx`, `npm run html:day -- …`  
-**At monorepo root:** `node devpaper/src/cli.mjs` or `npm run dp:idx`, `npm run dp:day -- …`  
-**Do not** run `node devpaper/src/cli.mjs` when cwd is already `devpaper/` (path will double up).
+**At package root (this repo clone or `node_modules/devpaper`):** `node src/cli.mjs` / `npm run idx`, `npm run html:day -- …`, or from a parent monorepo **`npm run dp:idx`** if you added wrapper scripts.  
+**Do not** nest an extra `devpaper/` path segment when cwd is already the package root.
 
 ```bash
-cd devpaper && npm install && npm run idx
+npm install && npm run idx
 ```
 
-From repo root: `npm run dp:idx`. Single-day HTML: `npm run dp:day -- 2026-04-30` (root).
+Single-day HTML: `npm run dp:day -- 2026-04-30` (when `dp:*` scripts exist at repo root) or `npm run html:day -- 2026-04-30`.
 
-Week / month / range builds write under `devpaper/dist/<period>/`; prefer a local static server over raw `file://` if you hit iframe limits.
+Week / month / range builds write under `dist/<period>/`; prefer a local static server over raw `file://` if you hit iframe limits.
 
 ```bash
-cd devpaper && npm run html:week -- 2026-04-30
-cd devpaper && npm run html:month -- 2026-04
-cd devpaper && npm run devpaper -- build --from 2026-04-01 --to 2026-04-30
+npm run html:week -- 2026-04-30
+npm run html:month -- 2026-04
+npm run devpaper -- build --from 2026-04-01 --to 2026-04-30
 ```
 
 ---
