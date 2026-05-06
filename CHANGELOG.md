@@ -4,11 +4,17 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-05-07
+
 ### Changed
 
-- **仓库卫生**：`logs/*.md` 与 **`docs-local/`** 不再纳入 Git（见根 `.gitignore`）；远端历史中的对应文件已从版本树移除，克隆后请在本地自建 `logs/`、`docs-local/`。
-- **OpenSpec**：权威变更骨架迁至 **`openspec/template/`**；**`openspec/changes/archive/`** 默认忽略，减小克隆体积；流程见 **`openspec/README.md`**。
-- **npm 包**：`package.json` 的 **`files`** 不再包含 **`test/`**（单测随 GitHub 仓库与 CI，不打进 `npm pack`）。
+- **仓库卫生**：`logs/*.md` 与 **`docs-local/`** 不再纳入 Git（见根 `.gitignore`）；克隆后请在本地自建 `logs/`、`docs-local/`。
+- **OpenSpec**：权威变更骨架在 **`openspec/template/`**；**`openspec/changes/archive/`** 默认忽略；流程见 **`openspec/README.md`**。
+- **npm 包**：`package.json` 的 **`files`** 不再包含 **`test/`**（ tarball 更瘦；单测在 GitHub / CI）。
+
+### Security
+
+- 已用 **`git filter-repo`** 从 Git 历史中剔除曾提交的 `logs/*.md`、`docs-local/`、OpenSpec 归档目录及 `logs` 下索引生成物等路径；**npm 包内容未变**，仅仓库历史更干净。已有克隆需 **`git fetch` + `git reset --hard origin/main`** 或重新 clone。
 
 ## [0.1.0] - 2026-05-06
 
@@ -34,4 +40,5 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.1]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.1
 [0.1.0]: https://github.com/aiyinluya/devpaper
