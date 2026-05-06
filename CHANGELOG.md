@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-05-06
+
+### Changed
+
+- **`devpaper hub`**：启动后在终端**醒目打印**月历 URL 与 **Ctrl+C 停止**说明；支持 **`--open`** 尝试用系统默认浏览器打开。
+- **`hub` 默认路径**：若未传 `--logs` / `--out`，可读环境变量 **`DEVPAPER_LOGS`**、**`DEVPAPER_OUT`**（便于全局安装后任意目录启动）。
+
 ## [0.1.4] - 2026-05-06
 
 ### Added
@@ -59,6 +66,7 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.5]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.5
 [0.1.4]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.4
 [0.1.3]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.3
 [0.1.2]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.2

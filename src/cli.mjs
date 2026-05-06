@@ -36,7 +36,9 @@ function printHelp() {
   devpaper build --week-of YYYY-MM-DD [--logs <dir>] [--out <dir>]
   devpaper build … [--template newspaper|broadsheet|reader|reader-night] [--section-title 文本] [--single-html]
   devpaper index [--logs <dir>] [--md] [--out <dir>]
-  devpaper hub [--logs <dir>] [--out <dir>] [--port 8765]
+  devpaper hub [--logs <dir>] [--out <dir>] [--port 8765] [--open]
+      全局默认路径（可选）: 环境变量 DEVPAPER_LOGS、DEVPAPER_OUT；与 --logs/--out 同时存在时命令行优先。
+      --open: 启动后尝试用系统默认浏览器打开月历页。
   devpaper init-cursor --logs <dir> --out <dir> [--cwd <项目根>] [--force]
       在当前项目生成 .cursor/rules/devpaper-log.mdc（手记/HTML 路径写入 Rule）。
       --logs 与 --out 必填（相对路径相对 --cwd，默认 cwd 为当前目录）；已存在文件时跳过，除非 --force。
@@ -151,18 +153,29 @@ async function main() {
     return;
   }
 
-  const logsDir = resolveLogs(argValue(argv, "--logs") ?? DEFAULT_LOGS);
-  const outDir = resolveOut(argValue(argv, "--out") ?? DEFAULT_OUT);
+  const logsDir = resolveLogs(
+    argValue(argv, "--logs") ??
+      (cmd === "hub" ? process.env.DEVPAPER_LOGS : undefined) ??
+      DEFAULT_LOGS
+  );
+  const outDir = resolveOut(
+    argValue(argv, "--out") ??
+      (cmd === "hub" ? process.env.DEVPAPER_OUT : undefined) ??
+      DEFAULT_OUT
+  );
 
   if (cmd === "hub") {
     const hubArgs = argv.slice(1);
-    const portArg = argValue(hubArgs, "--port");
+    const openBrowser = hubArgs.includes("--open");
+    const hubArgsForServer = hubArgs.filter((a) => a !== "--open");
+    const portArg = argValue(hubArgsForServer, "--port");
     const port = portArg ? Number(portArg) || 8765 : 8765;
     const { startHubFromArgv } = await import("./hub-serve.mjs");
-    await startHubFromArgv(hubArgs, {
+    await startHubFromArgv(hubArgsForServer, {
       logsDir,
       outDir,
       port,
+      openBrowser,
     });
     return;
   }

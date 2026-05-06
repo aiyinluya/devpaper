@@ -1,6 +1,6 @@
 {
   "name": "devpaper",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "用 Cursor Rule + 包内文档在 AI 解题时结构化记录，再用 CLI 生成报纸风 HTML 日报",
   "type": "module",
   "license": "MIT",

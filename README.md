@@ -144,6 +144,14 @@ npm run devpaper -- hub --port 9000
 
 停服：在该终端按 **`Ctrl+C`**。
 
+**全局（任意目录）启动**：若已 `npm install -g devpaper`，可先在本机环境变量里设 **`DEVPAPER_LOGS`**、**`DEVPAPER_OUT`**（手记根目录与 HTML 输出根，与 `init-cursor` / 日常 `index` `build` 一致），然后任意终端执行：
+
+```bash
+devpaper hub
+```
+
+启动后终端会**醒目打印** `http://127.0.0.1:<端口>/hub/index.html`；加 **`--open`** 可尝试自动用系统浏览器打开。仍用 **`Ctrl+C`** 停服。也可用命令行覆盖路径：`devpaper hub --logs D:/Notes/... --out D:/Notes/...`。
+
 #### 方式 B：只要月历、不要网页按钮 — `npx serve` 静态站
 
 **在仓库根**执行（需已装 Node，会临时下载 `serve`）：
@@ -210,7 +218,7 @@ npx --yes serve .
 | 帮助 | `node src/cli.mjs` | 无子命令或 `-h` / `--help` | — | — | 打印用法后退出 |
 | 生成 Cursor Rule | `node src/cli.mjs init-cursor` | **必填** `--logs`、`--out`；可选 `--cwd`、`--force` | — | — | 写入 `<cwd>/.cursor/rules/devpaper-log.mdc` |
 | 记忆索引 | `node src/cli.mjs index` | 可选 `--logs`、`--out`（`--out` 指定扫描 **dist** 的路径以写 `hub-calendar.json`）、`--md` | 本包 `logs` | — | `index.json`、`hub-calendar.json`；`--md` 再写 `INDEX.md` |
-| 本机控制台 | `node src/cli.mjs hub` | 可选 `--logs`、`--out`、`--port` | 本包 `logs` | 本包 `dist` | 监听 127.0.0.1，静态 + `/api/*` |
+| 本机控制台 | `node src/cli.mjs hub` | 可选 `--logs`、`--out`、`--port`、`--open`；`hub` 可用 **`DEVPAPER_LOGS` / `DEVPAPER_OUT`** 作默认路径 | 本包 `logs` | 本包 `dist` | 监听 127.0.0.1，静态 + `/api/*`；启动后打印可点击的月历 URL；**`--open`** 调系统浏览器 |
 | 单日报纸 HTML | `node src/cli.mjs build --date YYYY-MM-DD` | **必填** `--date`；可选 `--logs`、`--out`、`--template`、`--section-title`、**`--single-html`** | 本包 `logs` | 本包 `dist` | 写入 **`dist/YYYY-MM/`**（版式页 + 各 `tpl-*.html`）；`--single-html` 时仅单文件同目录 |
 | 每天各一份 HTML | `node src/cli.mjs build --all` | 可选同上 | 同上 | 同上 | 每个有日志的日期各一份 |
 | 日期区间 + 导航 | `node src/cli.mjs build --from A --to B` | **必填** `--from`、`--to` | 同上 | 同上 | `<out>/range-…/index.html` + 各日 |

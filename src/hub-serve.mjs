@@ -3,6 +3,7 @@
  */
 import http from "node:http";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { buildHubCalendarSnapshot, buildMemoryIndex } from "./index-build.mjs";
@@ -20,11 +21,28 @@ const YMD = /^\d{4}-\d{2}-\d{2}$/;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, "..");
+/** @param {string} url */
+function openUrlInBrowser(url) {
+  const platform = process.platform;
+  if (platform === "win32") {
+    spawn("cmd", ["/c", "start", "", url], {
+      detached: true,
+      stdio: "ignore",
+      windowsHide: true,
+    }).unref();
+  } else if (platform === "darwin") {
+    spawn("open", [url], { detached: true, stdio: "ignore" }).unref();
+  } else {
+    spawn("xdg-open", [url], { detached: true, stdio: "ignore" }).unref();
+  }
+}
+
 /**
  * @param {string[]} argv
- * @param {{ logsDir: string, outDir: string, port: number }} opts
+ * @param {{ logsDir: string, outDir: string, port: number, openBrowser?: boolean }} opts
  */
 export async function startHubFromArgv(argv, opts) {
+  const openBrowser = Boolean(opts.openBrowser);
   const port = (() => {
     const i = argv.indexOf("--port");
     if (i !== -1 && argv[i + 1]) return Number(argv[i + 1]) || 8765;
@@ -313,10 +331,24 @@ export async function startHubFromArgv(argv, opts) {
     server.on("error", reject);
   });
 
-  console.log(
-    `手记控制台（统一界面） http://127.0.0.1:${port}/hub/index.html\n` +
-      `  logs: ${logsDir}\n` +
-      `  dist: ${outDir}\n` +
-      `  API: GET /api/calendar（含索引刷新）· POST /api/build-day · /api/build-month · /api/build-period-nav · /api/index`
-  );
+  const hubUrl = `http://127.0.0.1:${port}/hub/index.html`;
+  console.log(`
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  手记控制台已启动（仅监听 127.0.0.1）
+  在浏览器中打开:
+    ${hubUrl}
+  停止服务: 在本终端按 Ctrl+C
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  logs: ${logsDir}
+  dist: ${outDir}
+  API: GET /api/calendar（含索引刷新）· POST /api/build-day · /api/build-month · /api/build-period-nav · /api/index
+`);
+
+  if (openBrowser) {
+    try {
+      openUrlInBrowser(hubUrl);
+    } catch (e) {
+      console.warn("未能自动打开浏览器（可手动复制上方 URL）:", e);
+    }
+  }
 }
