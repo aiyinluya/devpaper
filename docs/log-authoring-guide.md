@@ -4,7 +4,7 @@ This document is the **authoritative reference** for log entry format and metada
 
 Log bodies are often written in Chinese (or any human language); **metadata keys** in entries may use the Chinese labels below so they match the HTML/index parsers.
 
-**Repo-only supplements** (default paths, a11y checklist, security assumptions, backup notes): see **[`../docs-local/README.md`](../docs-local/README.md)**. Those files are **not** included in the npm package—only this guide ships under `docs/` in the tarball.
+**Optional local supplements** (default paths, a11y checklist, security assumptions, backup notes): keep them in a self-created **`docs-local/`** at the package root on your machine. That directory is **not tracked in this GitHub repo** and is **not** included in the npm package—only this guide ships under `docs/` in the tarball.
 
 ---
 

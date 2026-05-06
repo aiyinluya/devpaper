@@ -2,13 +2,13 @@
 
 ## Purpose
 
-约定 **人类与 Coding Agent** 在排错/方案落地后如何把结构化手记写入仓库，并与 **索引 / HTML** 工作流衔接。交付物为：仓库根 **Cursor Rule**（`.cursor/rules/devpaper-log.mdc`，`alwaysApply`）+ 包内 **`docs/log-authoring-guide.md`**（npm **`files`** 中**唯一** `docs` 条目）。**能力 ID 保留历史名 `cursor-skill-devpaper`**，与是否使用 Cursor「Skill」文件无绑定（本仓库已不维护包内 `.cursor/skills/`）。补充说明（路径、a11y、安全、备份）在 **`docs-local/`**，**不进 npm 包**。
+约定 **人类与 Coding Agent** 在排错/方案落地后如何把结构化手记写入仓库，并与 **索引 / HTML** 工作流衔接。交付物为：仓库根 **Cursor Rule**（`.cursor/rules/devpaper-log.mdc`，`alwaysApply`）+ 包内 **`docs/log-authoring-guide.md`**（npm **`files`** 中**唯一** `docs` 条目）。**能力 ID 保留历史名 `cursor-skill-devpaper`**，与是否使用 Cursor「Skill」文件无绑定（本仓库已不维护包内 `.cursor/skills/`）。补充说明（路径、a11y、安全、备份）MAY 放在本机自建的 **`docs-local/`**（**不进 npm 包**；本仓库 **默认不入 Git**）。
 
 ## Requirements
 
 ### Requirement: 执笔规范可发现路径
 
-规范文档 MUST 以 **`docs/log-authoring-guide.md`** 提供（与 npm 包 `files` 中 **`docs/log-authoring-guide.md`** 一致），仓库根 **`README.md`** MUST 指向该路径；项目级 Rule 为仓库根 **`.cursor/rules/devpaper-log.mdc`**。路径、a11y、安全与备份等补充说明 MAY 放在 **`docs-local/`**（不进 npm 包）。
+规范文档 MUST 以 **`docs/log-authoring-guide.md`** 提供（与 npm 包 `files` 中 **`docs/log-authoring-guide.md`** 一致），仓库根 **`README.md`** MUST 指向该路径；项目级 Rule 为仓库根 **`.cursor/rules/devpaper-log.mdc`**。路径、a11y、安全与备份等补充说明 MAY 放在本机 **`docs-local/`**（不进 npm 包；本仓库默认不入 Git）。
 
 #### Scenario: 新贡献者启用
 

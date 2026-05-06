@@ -2,7 +2,7 @@
 
 用 **Cursor 规则 + 执笔规范文档** 在 AI 解题过程中留下结构化手记，按日落盘到固定目录；用 **CLI** 生成报纸风 HTML（**单日多篇**；**周/月/区间**则生成「导航壳页 + 每日独立日报」可点击切换），并维护 **`index.json` 记忆索引**，减轻「不知道 AI 做了什么」和「同类错误反复踩」的问题。
 
-**原始痛点**：自己写的代码出错，往往能快速联想到大致位置与原因；**若代码几乎全是 AI 写的**而中间过程未留痕，出问题时常**一无所知**。手记把**每日的中间出错、方案取舍**等写进人能读的 `logs/`，便于交付后再排障时对照，也便于与下一轮 AI 续接上下文。在 AI 编程范式下，人的重心更多在需求澄清、技术方案、**对 AI 产出与中间过程的审核**等——**阅读与维护每日手记**，宜与 Code Review、测试一样视为**必要模块**（更长叙事可写在本机 **[docs-local/](docs-local/)**，见该目录 [README.md](docs-local/README.md)）。
+**原始痛点**：自己写的代码出错，往往能快速联想到大致位置与原因；**若代码几乎全是 AI 写的**而中间过程未留痕，出问题时常**一无所知**。手记把**每日的中间出错、方案取舍**等写进人能读的 `logs/`，便于交付后再排障时对照，也便于与下一轮 AI 续接上下文。在 AI 编程范式下，人的重心更多在需求澄清、技术方案、**对 AI 产出与中间过程的审核**等——**阅读与维护每日手记**，宜与 Code Review、测试一样视为**必要模块**（更长叙事可写在本机 **`docs-local/`** 目录，**不入库**）。
 
 **为何叫「手记」**：强调内容**最终是给人读的**——人是意义与责任的终点；索引与 HTML 是让人更好读、让机器更好帮人的手段。它试图衔接 **古法编程**（过程留在注释与文档）与 **AI 编程**（过程易消散在对话）之间的断层，做一座可积累的桥。命名与立意的展开同样可放在 **`docs-local/`** 自拟文稿中（默认不提交 Git）。
 
@@ -10,9 +10,9 @@
 
 本仓库即 **devpaper** 包根目录。行为契约见 **`openspec/specs/`**；新变更流程见 **[`openspec/README.md`](openspec/README.md)**（复制 **[`openspec/changes/archive/2026-05-07-openspec-baseline/template/`](openspec/changes/archive/2026-05-07-openspec-baseline/template/)** 到 `openspec/changes/<短名>/`）。已归档提案见 [`openspec/changes/archive/`](openspec/changes/archive/)。
 
-**参赛 / 路演 / 他人上手长文**：放在本机 **[`docs-local/`](docs-local/)**（见 [docs-local/README.md](docs-local/README.md)，默认不入库）。
+**参赛 / 路演 / 他人上手长文**：放在本机 **`docs-local/`**（默认不入库）。
 
-**更多文档**：[Log authoring guide](docs/log-authoring-guide.md)（英文格式骨架，**随 npm 包分发**）· [docs-local：路径 / a11y / 安全 / 备份等](docs-local/README.md)（**克隆可见，不进 npm 包**）
+**更多文档**：[Log authoring guide](docs/log-authoring-guide.md)（英文格式骨架，**随 npm 包分发**）。路径 / a11y / 安全 / 备份等长文请放在本机自建的 **`docs-local/`**（**不入库**；可从历史提交或模板自行拷贝 `README.md` 骨架）。
 
 **路径易错点**：本仓库**根目录即包根**，请用 **`node src/cli.mjs …`** 或 **`npm run dp:*` / `npm run html:*`**。若从 **npm 安装的 `node_modules/devpaper`** 内执行，仍用 `node src/cli.mjs`，**不要**再套一层 `devpaper/` 前缀路径。
 
@@ -179,7 +179,8 @@ npx --yes serve .
 
 **前置条件**：Node.js **≥ 18**；在**包根**（本仓库根或 `node_modules/devpaper`）执行 `npm install` 一次。
 
-**路径约定**：未指定 `--logs` / `--out` 时，CLI 固定使用**本包根目录**下的 `logs/` 与 `dist/`，与当前 shell 的 cwd 无关。你传入的相对路径仍相对**当前 shell 所在目录**解析。
+**路径约定**：未指定 `--logs` / `--out` 时，CLI 固定使用**本包根目录**下的 `logs/` 与 `dist/`，与当前 shell 的 cwd 无关。你传入的相对路径仍相对**当前 shell 所在目录**解析。  
+**克隆本仓库**：`logs/*.md` **不入 Git**；目录内保留 **`logs/.gitkeep`**。请自行新建 `logs/YYYY-MM-DD.md`，或运行 **`npm run sample:logs`** 生成虚构演示手记（会写入 `logs/`）。
 
 | 用途 | 命令 | 参数 | 默认 `--logs` | 默认 `--out` | 生成物 / 行为 |
 |------|------|------|---------------|--------------|----------------|

@@ -15,20 +15,20 @@ CI 与本地均在仓库根执行 **`npm test`**。
 | `src/` | CLI、构建、解析、Hub 服务逻辑 |
 | `templates/`、`assets/` | 内置 HTML/CSS |
 | `test/` | `node:test` 单测 |
-| `logs/` | 手记源 `*.md`；`index.json`、`INDEX.md`、`hub-calendar.json` 已 **`.gitignore`**（`dp:idx` 重建） |
+| `logs/` | 手记源 `*.md` 与索引生成物 **默认不入 Git**（见根 `.gitignore`）；本地 `npm run dp:idx` 可重建 `index.json` 等 |
 | `dist/` | 构建产物，**默认不入 Git**；由 CI 或本地 `build` 生成 |
-| `docs-local/` | 路径、a11y、安全、备份等（**随 Git**；**不进 npm**）；见 [docs-local/README.md](docs-local/README.md) |
+| `docs-local/` | 本机自建长文（路径、a11y、安全、备份等），**不入 Git**、**不进 npm** |
 
 ## PR 建议
 
 - **粒度**：一个 PR 聚焦一类变更（如只修解析、只加文档），便于审阅与回滚。
-- **不提交**：`node_modules/`、`dist/` 全量、个人 `logs/*.md`（除非维护者约定的示例数据）。
+- **不提交**：`node_modules/`、`dist/` 全量、`logs/*.md`、`docs-local/`、索引生成物（见 `.gitignore`）。
 - **关联**：复杂行为变更可在 PR 描述中链接 [CHANGELOG.md](CHANGELOG.md) 拟追加条目。
 
 ## 发布与版本
 
 - 发版前更新 [CHANGELOG.md](CHANGELOG.md) 与 `package.json` 的 `version`。
-- npm 包 `files` 仅额外包含 **`docs/log-authoring-guide.md`**（其余说明在 `docs-local/`，不进包）。若新增需随包分发的路径请同步修改 `package.json` 的 `files`。
+- npm 包 `files` 仅额外包含 **`docs/log-authoring-guide.md`**。若新增需随包分发的路径请同步修改 `package.json` 的 `files`。
 
 ## 规范
 

@@ -2,11 +2,17 @@
 
 本文件遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/) 精神；版本号与 [package.json](package.json) 中 `version` 对齐。
 
+## [Unreleased]
+
+### Changed
+
+- **仓库卫生**：`logs/*.md` 与 **`docs-local/`** 不再纳入 Git（见根 `.gitignore`）；远端历史中的对应文件已从版本树移除，克隆后请在本地自建 `logs/`、`docs-local/`。
+
 ## [0.1.0] - 2026-05-06
 
 ### Changed
 
-- npm 包 `files`：仅分发 **`docs/log-authoring-guide.md`**；默认路径、a11y、安全与备份说明迁至 **`docs-local/`**（克隆仓库可见， tarball 不含）。
+- npm 包 `files`：仅分发 **`docs/log-authoring-guide.md`**；默认路径、a11y、安全与备份说明建议放在本机 **`docs-local/`**（不进 tarball）。
 - OpenSpec：主线 **`openspec/specs/*`** 与当前 CLI/HTML/索引行为对齐；新增 **`openspec/README.md`**。变更骨架与 spec 快照收入 **`openspec/changes/archive/2026-05-07-openspec-baseline/`**（`template/` + `specs-snapshot/`）；`openspec/` 根下不再保留独立 **`template/`**。原 `templete` 误拼目录已移除。
 
 ### Added

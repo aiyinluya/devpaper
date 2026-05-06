@@ -11,13 +11,11 @@ logs/hub-calendar.json
 .demo-logs/
 .demo-out/
 
-# docs-local：补充说明；部分文件跟踪，其余忽略
-docs-local/*
-!docs-local/README.md
-!docs-local/默认路径与用户场景.md
-!docs-local/a11y-检查清单.md
-!docs-local/内容与安全假设.md
-!docs-local/logs与dist备份说明.md
+# 按日手记正文（私有/本机，勿提交 GitHub；克隆后自建或 `npm run sample:logs`）
+logs/*.md
+
+# 本机补充长文与答辩材料（自建目录，不入版本库）
+docs-local/
 
 # 操作系统
 .DS_Store
