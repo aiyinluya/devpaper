@@ -64,7 +64,7 @@ npm run dp:month -- 2026-04
 
 **流程与目录说明**（立项 → 规格 → 实现 → 合并 → 归档）：见 **[openspec/README.md](openspec/README.md)**。  
 **现行契约**：[`openspec/specs/`](openspec/specs/)（与 `devpaper/` 行为强绑定）。  
-**新变更骨架**：复制 [`openspec/template/`](openspec/template/) 为 `openspec/changes/<短名>/`。
+**新变更骨架**：复制 [`openspec/changes/archive/2026-05-07-openspec-baseline/template/`](openspec/changes/archive/2026-05-07-openspec-baseline/template/) 为 `openspec/changes/<短名>/`。
 
 若已安装 OpenSpec CLI，可在仓库根使用 `openspec list`、`openspec status --change <名>`、`openspec validate <名>` 等命令；**未安装 CLI 不影响**阅读上述 README 与 `specs/*.md` 手工维护流程。
 
@@ -80,7 +80,6 @@ npm run dp:month -- 2026-04
 | `devpaper/hub/` | 静态月历页（需 http 访问） |
 | `devpaper/docs-local/` | 补充文档（部分跟踪；见该目录 README） |
 | `openspec/specs/` | 现行能力规格（`daily-log`、`newspaper-html`、`ai-memory-index`、`cursor-skill-devpaper`） |
-| `openspec/changes/` | **仅**进行中目录与 **`archive/`**；新变更复制 [`openspec/template/`](openspec/template/) |
-| `openspec/template/` | 新变更目录骨架（proposal / design / tasks） |
+| `openspec/changes/` | **进行中**子目录 + **`archive/`**（内含基线包 **`2026-05-07-openspec-baseline/`**：`template/` + `specs-snapshot/`） |
 
 **Git 忽略**：仓库根 **`.gitignore`**（OS、IDE、`node_modules`、`*.tgz` 等）+ **`devpaper/.gitignore`**（包内 `dist/`、演示目录、索引生成物等）。不必手动删除这些目录，未跟踪即可上传。

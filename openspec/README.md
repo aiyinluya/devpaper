@@ -1,14 +1,15 @@
 # OpenSpec 与本仓库（Devpaper）
 
-本目录存放 **规格驱动** 的契约：`openspec/specs/` 为**现行能力**（与 `devpaper/` 实现强绑定）；**进行中**的变更放在 **`openspec/changes/<短名>/`**（由你新建）；**已结束**的变更仅保留在 **`openspec/changes/archive/`**。**新变更骨架**在 **[`template/`](./template/)**（与 `changes/` 平级，避免与「归档」混淆）。
+本目录存放 **规格驱动** 的契约：`openspec/specs/` 为**现行能力**（与 `devpaper/` 实现强绑定）；**进行中**的变更放在 **`openspec/changes/<短名>/`**（由你新建）；**已结束**的变更在 **`openspec/changes/archive/`**。**新变更骨架**已**全部收入归档包**（见下表「基线归档」），不再在 `openspec/` 根下单独放 `template/`。
 
 ## 与 `devpaper/` 的关系
 
 | 层级 | 路径 | 作用 |
 |------|------|------|
 | 现行规格 | [`specs/`](./specs/) | 描述当前应满足的行为；改代码若改变对外行为，**应先改 spec 或同步补 spec** |
-| 变更提案 | `changes/<短名>/` | 新能力或行为调整：`proposal.md` → `design.md` → `tasks.md` + `specs/<capability>/spec.md` 增量（**复制 [`template/`](./template/) 到 `changes/<短名>/` 后开始**） |
-| 归档 | [`changes/archive/`](./changes/archive/) | 变更完成后整目录迁入；主线真相以 [`specs/`](./specs/) 为准 |
+| 基线归档（含模板 + 规格快照） | [`changes/archive/2026-05-07-openspec-baseline/`](./changes/archive/2026-05-07-openspec-baseline/) | **`template/`** 供复制开新变更；**`specs-snapshot/`** 为归档日主线 spec 冻结副本（对照用） |
+| 变更提案 | `changes/<短名>/` | 新能力或行为调整：`proposal.md` → `design.md` → `tasks.md` + `specs/<能力>/spec.md` 增量（**从基线包复制 `template/` 到此处后开始**） |
+| 其他归档 | [`changes/archive/`](./changes/archive/) | 历史变更目录；完成后迁入 |
 
 能力 ID（目录名）沿用历史命名，与实现模块对应关系：
 
@@ -21,7 +22,7 @@
 
 ## 推荐工作流（完整闭环）
 
-1. **立项**：复制 **[`template/`](./template/)** 到 **`changes/<短名>/`**。
+1. **立项**：复制 **[`changes/archive/2026-05-07-openspec-baseline/template/`](./changes/archive/2026-05-07-openspec-baseline/template/)** 到 **`changes/<短名>/`**（整目录复制）。
 2. **写 `proposal.md`**：Why / What / Impact；列出涉及的能力 ID。
 3. **写 `design.md`**（非平凡时）：关键取舍、与现有解析/HTML 的边界。
 4. **写规格增量**：`changes/<短名>/specs/<能力>/spec.md` 用 **Requirement + Scenario** 描述可验收行为。

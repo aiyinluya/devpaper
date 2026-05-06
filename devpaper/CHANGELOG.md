@@ -7,7 +7,7 @@
 ### Changed
 
 - npm 包 `files`：仅分发 **`docs/log-authoring-guide.md`**；默认路径、a11y、安全与备份说明迁至 **`docs-local/`**（克隆仓库可见， tarball 不含）。
-- OpenSpec：主线 **`openspec/specs/*`** 与当前 CLI/HTML/索引行为对齐；新增 **`openspec/README.md`** 与 **`openspec/template/`**（变更骨架；`openspec/changes/` 下仅保留 **`archive/`**）。原 `templete` 误拼目录已移除。
+- OpenSpec：主线 **`openspec/specs/*`** 与当前 CLI/HTML/索引行为对齐；新增 **`openspec/README.md`**。变更骨架与 spec 快照收入 **`openspec/changes/archive/2026-05-07-openspec-baseline/`**（`template/` + `specs-snapshot/`）；`openspec/` 根下不再保留独立 **`template/`**。原 `templete` 误拼目录已移除。
 
 ### Added
 

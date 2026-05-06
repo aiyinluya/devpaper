@@ -8,7 +8,7 @@
 
 **最短用法（按月、仓库根）**：`cd devpaper && npm install`（一次）→ 写好该月各日 `devpaper/logs/YYYY-MM-DD.md` → **`npm run dp:idx`** → **`npm run dp:month -- 2026-04`**（月份自换）→ 用浏览器打开 **`devpaper/dist/2026-04/index.html`**（建议 http，见下文第四节）。手记**月历**见下文 **「日历在哪、样式在哪、按月怎么用」** 一节。
 
-本工具行为以 **`openspec/specs/`** 现行契约为准；新变更流程见 **[`../openspec/README.md`](../openspec/README.md)**（复制 **`../openspec/template/`** 到 `changes/<短名>/`）。已归档提案见 [`../openspec/changes/archive/`](../openspec/changes/archive/)。
+本工具行为以 **`openspec/specs/`** 现行契约为准；新变更流程见 **[`../openspec/README.md`](../openspec/README.md)**（复制 **[`../openspec/changes/archive/2026-05-07-openspec-baseline/template/`](../openspec/changes/archive/2026-05-07-openspec-baseline/template/)** 到 `changes/<短名>/`）。已归档提案见 [`../openspec/changes/archive/`](../openspec/changes/archive/)。
 
 仓库根目录另有总览、**根目录 npm 脚本**与故障说明：[README.md](../README.md)。**参赛 / 路演 / 他人上手长文**：放在本机 **[docs-local/](docs-local/)**（见 [docs-local/README.md](docs-local/README.md)，默认不入库）。
 
