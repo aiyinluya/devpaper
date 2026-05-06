@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-05-06
+
+### Fixed
+
+- **`bin`**：新增包根 **`devpaper-bin.js`**（`#!/usr/bin/env node` + `import "./src/cli.mjs"`），`package.json` 的 **`bin.devpaper`** 指向该文件名（无子目录），避免部分 npm 版本将 **`bin/…` 或 `.mjs` 直链** 判为无效并从 registry 剥离。
+
 ## [0.1.2] - 2026-05-06
 
 ### Fixed
@@ -46,6 +52,7 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.3]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.3
 [0.1.2]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.2
 [0.1.1]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.1
 [0.1.0]: https://github.com/aiyinluya/devpaper
