@@ -169,9 +169,32 @@ npx --yes serve .
 
 ### 6. 与 Cursor 集成（闭环）
 
-1. **放进项目**：克隆本仓库或 `npm install devpaper`；可将 [`.cursor/rules/devpaper-log.mdc`](.cursor/rules/devpaper-log.mdc) 复制到你项目的 `.cursor/rules/` 以约束 Agent；**完整格式骨架**见 [docs/log-authoring-guide.md](docs/log-authoring-guide.md)（英文规范，正文语言不限）。  
-2. **日志**：`logs/*.md`，由 Agent 按 [Log authoring guide](docs/log-authoring-guide.md) / 自己维护。  
-3. **出报**：终端跑上表 `dp:*` 或 `html:*`；可选 **`--template broadsheet`**（专题大报分区）、**`--template reader`**（阅刊长读纵向卡片）、**`--template reader-night`**（同结构，深色阅刊）；头版图用正文靠前处的 `![](https://…)`；无图时用首段提要 + 指纹，或正文最开头一行 `> 自定义提要`。
+1. **放进项目**：克隆本仓库或 **`npm install devpaper`**（建议 `devDependencies`）。  
+2. **生成 Cursor Rule（推荐，免手拷）**：在**该业务项目根**执行  
+   `npx devpaper init-cursor --logs <手记目录> --out <HTML 输出根>`  
+   会在当前项目写入 **`.cursor/rules/devpaper-log.mdc`**，并把上述路径写进 Rule（收尾里的 `devpaper index` / `build` 与之一致）。`--logs` / `--out` **必填**（相对路径相对当前目录，或用 `--cwd` 指定项目根）；已存在同名 Rule 时**跳过**，需覆盖时加 **`--force`**。本仓库开发自测：`npm run dp:init-cursor`（相对 `./logs` 与 `./dist`）。  
+   亦可手动复制 [`.cursor/rules/devpaper-log.mdc`](.cursor/rules/devpaper-log.mdc)（不写入自定义路径）。  
+3. **完整格式骨架**：[docs/log-authoring-guide.md](docs/log-authoring-guide.md)（英文规范，正文语言不限）。  
+4. **日志**：由 Agent 按 Log authoring guide 写入 `--logs` 下的 `YYYY-MM-DD.md`（默认各业务仓库不入库 `logs/*.md`，路径由你自定）。  
+5. **出报**：终端对**同一套** `--logs` / `--out` 跑 `devpaper index` / `devpaper build`（或下表 `dp:*`）；可选 **`--template broadsheet`**、**`reader`**、**`reader-night`** 等。
+
+#### 全局手记目录 + 多项目同一天
+
+若希望**不按仓库拆分**手记（例如固定 `D:/Notes/devpaper-logs`），仍用**同一天一个 `YYYY-MM-DD.md`**：多个仓库的条目写在**同一文件**里，每条一个 **`## HH:MM · slug — 标题`**。区分项目可用正文 **`#project-foo`** 标签，或在 **slug** 里带项目代号（如 `acme-api`）；**指纹**仍以错误族为主，需要更细聚类时可加短前缀（见 [Log authoring guide — Multi-project](docs/log-authoring-guide.md)）。各业务项目各自跑一次 **`init-cursor`**（`--logs` / `--out` 指向**同一**全局路径即可），Rule 内容一致、Cursor 仍按「当前打开的工作区」生效。
+
+**消费者 `package.json` 示例**（路径请改成你的全局目录）：
+
+```json
+{
+  "scripts": {
+    "devpaper:rule": "devpaper init-cursor --logs D:/Notes/devpaper-logs --out D:/Notes/devpaper-dist",
+    "devpaper:idx": "devpaper index --logs D:/Notes/devpaper-logs --md --out D:/Notes/devpaper-dist",
+    "devpaper:day": "devpaper build --logs D:/Notes/devpaper-logs --out D:/Notes/devpaper-dist --date"
+  }
+}
+```
+
+首次克隆某业务仓库后执行一次 **`npm run devpaper:rule`**，之后日常 **`devpaper:idx`** / **`devpaper:day`**。
 
 ---
 
@@ -185,6 +208,7 @@ npx --yes serve .
 | 用途 | 命令 | 参数 | 默认 `--logs` | 默认 `--out` | 生成物 / 行为 |
 |------|------|------|---------------|--------------|----------------|
 | 帮助 | `node src/cli.mjs` | 无子命令或 `-h` / `--help` | — | — | 打印用法后退出 |
+| 生成 Cursor Rule | `node src/cli.mjs init-cursor` | **必填** `--logs`、`--out`；可选 `--cwd`、`--force` | — | — | 写入 `<cwd>/.cursor/rules/devpaper-log.mdc` |
 | 记忆索引 | `node src/cli.mjs index` | 可选 `--logs`、`--out`（`--out` 指定扫描 **dist** 的路径以写 `hub-calendar.json`）、`--md` | 本包 `logs` | — | `index.json`、`hub-calendar.json`；`--md` 再写 `INDEX.md` |
 | 本机控制台 | `node src/cli.mjs hub` | 可选 `--logs`、`--out`、`--port` | 本包 `logs` | 本包 `dist` | 监听 127.0.0.1，静态 + `/api/*` |
 | 单日报纸 HTML | `node src/cli.mjs build --date YYYY-MM-DD` | **必填** `--date`；可选 `--logs`、`--out`、`--template`、`--section-title`、**`--single-html`** | 本包 `logs` | 本包 `dist` | 写入 **`dist/YYYY-MM/`**（版式页 + 各 `tpl-*.html`）；`--single-html` 时仅单文件同目录 |

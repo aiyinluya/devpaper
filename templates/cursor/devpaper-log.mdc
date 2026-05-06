@@ -1,0 +1,32 @@
+---
+description: 非平凡排错或方案落地后写入按日手记，并提醒更新索引/HTML
+alwaysApply: true
+---
+
+# Devpaper 手记（项目规则）
+
+## 何时做
+
+在**本轮结束前**，若刚完成：已定位并修复的 bug、或需推理的配置/构建排错，且能写出**根因/关键权衡**（非纯机械改动），则追加一条到当日日志。用户明确说「不要记」则跳过。
+
+## 写哪里
+
+- 路径：`{{LOGS_DIR}}/YYYY-MM-DD.md`（日期取用户语境中的「当天」；无则创建，首行可 `# YYYY-MM-DD`）。
+- **多项目同一天**：同一文件内多条手记，每条一个 `## HH:MM · slug — 标题`；可用正文 `#tag` 或 slug 前缀区分项目（如 `acme-api`）。指纹仍可写错误族；需要更细聚类时指纹里加短前缀（如 `acme`、`jwt-exp`）。
+
+## 格式
+
+- 标题行尽量：`## HH:MM · kebab-slug — 短标题`。
+- **指纹**（短代号，便于 `index.json` 聚类）：`**指纹**：a, b` 或 `指纹：a, b`。
+- 可选：**刊位**（头版/要闻/简讯）、**等级**、**类型**、正文 `#tag`；**完整骨架、字段说明与可复制模板**见 {{LOG_GUIDE_HINT}}（正文语言不限，元数据键名可与解析器一致）。
+
+## 收尾
+
+- 建议提醒或代为执行（路径与下面「写哪里」一致）：
+  - `devpaper index --logs {{LOGS_DIR}} --md --out {{OUT_DIR}}`
+  - `devpaper build --logs {{LOGS_DIR}} --out {{OUT_DIR}} --date YYYY-MM-DD`
+- **勿**在已是包根时再套一层 `devpaper/` 前缀路径；CLI 用 **`devpaper`**（`npx` / `npm exec`）或 **`node node_modules/devpaper/devpaper-bin.js`**。
+
+## 禁止
+
+- 不编造未验证的根因；不塞超长无结构原始日志。

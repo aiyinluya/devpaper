@@ -1,6 +1,6 @@
 {
   "name": "devpaper",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "用 Cursor Rule + 包内文档在 AI 解题时结构化记录，再用 CLI 生成报纸风 HTML 日报",
   "type": "module",
   "license": "MIT",
@@ -31,7 +31,8 @@
     "dp:month": "node ./src/cli.mjs build --logs ./logs --out ./dist --month",
     "dp:week": "node ./src/cli.mjs build --logs ./logs --out ./dist --week-of",
     "dp:idx": "node ./src/cli.mjs index --logs ./logs --md",
-    "dp:demo": "node ./scripts/demo-day.mjs"
+    "dp:demo": "node ./scripts/demo-day.mjs",
+    "dp:init-cursor": "node ./src/cli.mjs init-cursor --logs ./logs --out ./dist"
   },
   "bin": {
     "devpaper": "devpaper-bin.js"

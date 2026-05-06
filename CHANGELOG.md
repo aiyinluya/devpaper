@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-05-06
+
+### Added
+
+- **`devpaper init-cursor`**：在任意项目根生成 **`.cursor/rules/devpaper-log.mdc`**（`--logs` / `--out` 必填，路径写入 Rule；已存在时默认跳过，**`--force`** 覆盖）。模板随包分发：`templates/cursor/devpaper-log.mdc`。
+- 文档：[README](README.md) 与 [docs/log-authoring-guide.md](docs/log-authoring-guide.md) 补充**全局手记目录**与**多项目同一天**写法；本仓库脚本 **`npm run dp:init-cursor`** 供开发自测。
+
 ## [0.1.3] - 2026-05-06
 
 ### Fixed
@@ -52,6 +59,7 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.4]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.4
 [0.1.3]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.3
 [0.1.2]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.2
 [0.1.1]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.1

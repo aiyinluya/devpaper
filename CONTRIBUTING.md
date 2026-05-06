@@ -5,6 +5,7 @@
 - Node.js **≥ 18**（与 [package.json](package.json) `engines` 一致）。
 - 在**仓库根**执行 **`npm install`**。
 - 修改 `src/`、`templates/`、`assets/`、`hub/` 后请运行 **`npm test`**；提交前确保单测通过。
+- 修改 **`init-cursor`** 时：单测会校验在临时目录下生成 `.cursor/rules/devpaper-log.mdc`、占位路径替换及**无 `--force` 时跳过已存在文件**；提交前同样跑 **`npm test`**。
 
 CI 与本地均在仓库根执行 **`npm test`**。
 

@@ -22,6 +22,15 @@ Before the end of the current session, add an entry to **today’s** log (skip i
 - Default: `logs/YYYY-MM-DD.md` (use the **session’s “today”**; if your project uses another `logs` directory by convention, follow that path).
 - If the day file does not exist: create it; the first line may be `# YYYY-MM-DD` as a masthead.
 
+### Multi-project, same day (optional)
+
+You MAY keep **one global `logs/` directory** shared across many code repos, and still use **one file per calendar day**. Put entries from different projects in the **same** `YYYY-MM-DD.md`, each as its own `## HH:MM · slug — title` block.
+
+- **Disambiguate projects** with `#project-foo` tags in the body, and/or bake the repo/service into the **slug** (e.g. `acme-api-oauth-timeout`).
+- **Fingerprints** SHOULD stay “error family” oriented; add a short **prefix** in the fingerprint line (e.g. `acme`, `jwt-exp`) if you want finer clustering in `index.json`.
+
+To install the Cursor rule into each repo with your chosen `--logs` / `--out`, run **`devpaper init-cursor`** (see the devpaper `README`).
+
 ---
 
 ## Article shape (one `##` block = one article)
