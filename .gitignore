@@ -17,6 +17,9 @@ logs/*.md
 # 本机补充长文与答辩材料（自建目录，不入版本库）
 docs-local/
 
+# OpenSpec 已结束变更归档（体积大、易过期；权威模板见 openspec/template/）
+openspec/changes/archive/
+
 # 操作系统
 .DS_Store
 Thumbs.db
@@ -51,3 +54,7 @@ pnpm-debug.log*
 # 覆盖率等
 coverage/
 .nyc_output/
+
+# 常见工具缓存
+.eslintcache
+*.tsbuildinfo

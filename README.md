@@ -8,7 +8,7 @@
 
 **最短用法（按月）**：`npm install`（一次）→ 写好该月各日 **`logs/YYYY-MM-DD.md`** → **`npm run dp:idx`** → **`npm run dp:month -- 2026-04`**（月份自换）→ 用浏览器打开 **`dist/2026-04/index.html`**（建议 http，见下文第四节）。手记**月历**见下文 **「日历在哪、样式在哪、按月怎么用」** 一节。
 
-本仓库即 **devpaper** 包根目录。行为契约见 **`openspec/specs/`**；新变更流程见 **[`openspec/README.md`](openspec/README.md)**（复制 **[`openspec/changes/archive/2026-05-07-openspec-baseline/template/`](openspec/changes/archive/2026-05-07-openspec-baseline/template/)** 到 `openspec/changes/<短名>/`）。已归档提案见 [`openspec/changes/archive/`](openspec/changes/archive/)。
+本仓库即 **devpaper** 包根目录。行为契约见 **`openspec/specs/`**；新变更流程见 **[`openspec/README.md`](openspec/README.md)**（复制 **[`openspec/template/`](openspec/template/)** 到 **`openspec/changes/<短名>/`**）。**`openspec/changes/archive/`** 仅作本机留档，默认 **不入库**（见根 `.gitignore`）。
 
 **参赛 / 路演 / 他人上手长文**：放在本机 **`docs-local/`**（默认不入库）。
 
@@ -266,7 +266,7 @@ node src/cli.mjs index --logs ./logs --md
 
 ## Cursor 与执笔规范
 
-手记的**详细模板与元数据说明**见 **[docs/log-authoring-guide.md](docs/log-authoring-guide.md)**（与根目录 **`.cursor/rules/devpaper-log.mdc`** 搭配：Rule 管纪律，文档管格式）。历史快照见归档目录 [`2026-04-30-devpaper`](openspec/changes/archive/2026-04-30-devpaper/)；**以主线 [`openspec/specs/`](openspec/specs/) 为准**。
+手记的**详细模板与元数据说明**见 **[docs/log-authoring-guide.md](docs/log-authoring-guide.md)**（与根目录 **`.cursor/rules/devpaper-log.mdc`** 搭配：Rule 管纪律，文档管格式）。**以主线 [`openspec/specs/`](openspec/specs/) 为准**；旧版 OpenSpec 提案若需对照可查 **Git 历史**。
 
 ---
 

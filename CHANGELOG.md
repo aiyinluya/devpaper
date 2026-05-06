@@ -7,13 +7,15 @@
 ### Changed
 
 - **仓库卫生**：`logs/*.md` 与 **`docs-local/`** 不再纳入 Git（见根 `.gitignore`）；远端历史中的对应文件已从版本树移除，克隆后请在本地自建 `logs/`、`docs-local/`。
+- **OpenSpec**：权威变更骨架迁至 **`openspec/template/`**；**`openspec/changes/archive/`** 默认忽略，减小克隆体积；流程见 **`openspec/README.md`**。
+- **npm 包**：`package.json` 的 **`files`** 不再包含 **`test/`**（单测随 GitHub 仓库与 CI，不打进 `npm pack`）。
 
 ## [0.1.0] - 2026-05-06
 
 ### Changed
 
 - npm 包 `files`：仅分发 **`docs/log-authoring-guide.md`**；默认路径、a11y、安全与备份说明建议放在本机 **`docs-local/`**（不进 tarball）。
-- OpenSpec：主线 **`openspec/specs/*`** 与当前 CLI/HTML/索引行为对齐；新增 **`openspec/README.md`**。变更骨架与 spec 快照收入 **`openspec/changes/archive/2026-05-07-openspec-baseline/`**（`template/` + `specs-snapshot/`）；`openspec/` 根下不再保留独立 **`template/`**。原 `templete` 误拼目录已移除。
+- OpenSpec：主线 **`openspec/specs/*`** 与当前 CLI/HTML/索引行为对齐；新增 **`openspec/README.md`**。后续版本将变更骨架固定为仓库根 **`openspec/template/`**（不再依赖 `changes/archive/` 内的副本）。原 `templete` 误拼目录已移除。
 
 ### Added
 

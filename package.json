@@ -41,7 +41,6 @@
     "assets",
     "templates",
     "hub",
-    "test",
     "scripts",
     "docs/log-authoring-guide.md"
   ],
