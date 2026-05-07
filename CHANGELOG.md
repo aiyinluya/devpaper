@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-05-07
+
+### Fixed
+
+- **`devpaper hub` 静态路径**：浏览器访问 **`/dist/*`**、**`/logs/*`** 时改为映射到当前 hub 使用的 **`outDir` / `logsDir`**（与 API 一致），避免全局安装且手记在其它目录时，控制台内链接仍指向包内空目录的问题。
+
+### Changed
+
+- **路径默认值**：`index`、`build`、`hub` 与 **`init-cursor`** 在未传 `--logs` / `--out` 时，统一按 **命令行 > 环境变量 `DEVPAPER_LOGS` / `DEVPAPER_OUT` > 包内默认 `logs` / `dist`** 解析（此前仅 `hub` 读取环境变量）。
+- **`index`**：仅在**未**通过 `--out` 或 `DEVPAPER_OUT` 指定 HTML 输出根时，扫描 `dist`、写 `hub-calendar.json` 仍使用 **`手记目录` 上一级下的 `dist`**，与「只传 `--logs`」的旧用法兼容。
+
 ## [0.1.5] - 2026-05-06
 
 ### Changed
@@ -66,6 +77,7 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.6]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.6
 [0.1.5]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.5
 [0.1.4]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.4
 [0.1.3]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.3

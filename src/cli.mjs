@@ -12,6 +12,7 @@ import {
   unlinkLegacyRootDayArtifacts,
 } from "./build.mjs";
 import { buildMemoryIndex } from "./index-build.mjs";
+import { envPath } from "./env-path.mjs";
 import { PKG_ROOT, resolveLogs, resolveOut } from "./paths.mjs";
 import { initCursorCommand } from "./init-cursor.mjs";
 import { filterDatesWithExistingMd } from "./parse.mjs";
@@ -37,13 +38,16 @@ function printHelp() {
   devpaper build … [--template newspaper|broadsheet|reader|reader-night] [--section-title 文本] [--single-html]
   devpaper index [--logs <dir>] [--md] [--out <dir>]
   devpaper hub [--logs <dir>] [--out <dir>] [--port 8765] [--open]
-      全局默认路径（可选）: 环境变量 DEVPAPER_LOGS、DEVPAPER_OUT；与 --logs/--out 同时存在时命令行优先。
       --open: 启动后尝试用系统默认浏览器打开月历页。
-  devpaper init-cursor --logs <dir> --out <dir> [--cwd <项目根>] [--force]
+  devpaper init-cursor [--logs <dir>] [--out <dir>] [--cwd <项目根>] [--force]
       在当前项目生成 .cursor/rules/devpaper-log.mdc（手记/HTML 路径写入 Rule）。
-      --logs 与 --out 必填（相对路径相对 --cwd，默认 cwd 为当前目录）；已存在文件时跳过，除非 --force。
+      --logs 与 --out 可改用环境变量 DEVPAPER_LOGS、DEVPAPER_OUT；已存在文件时跳过，除非 --force。
 
-默认 --logs / --out 为本包目录下 logs、dist（与当前工作目录无关）；可用参数覆盖。
+路径解析（index / build / hub 及 init-cursor 的默认来源）:
+  优先顺序: 命令行 --logs / --out > 环境变量 DEVPAPER_LOGS / DEVPAPER_OUT > 本包内默认 logs、dist。
+  init-cursor 中相对路径相对 --cwd（默认当前目录）。
+
+默认 --logs / --out（在未传参且未设上述环境变量时）为本包目录下 logs、dist（与当前工作目录无关）。
 
 路径注意:
   · 在包根请用: node src/cli.mjs … 或 npm run html:day -- 日期
@@ -154,14 +158,10 @@ async function main() {
   }
 
   const logsDir = resolveLogs(
-    argValue(argv, "--logs") ??
-      (cmd === "hub" ? process.env.DEVPAPER_LOGS : undefined) ??
-      DEFAULT_LOGS
+    argValue(argv, "--logs") ?? envPath("DEVPAPER_LOGS") ?? DEFAULT_LOGS
   );
   const outDir = resolveOut(
-    argValue(argv, "--out") ??
-      (cmd === "hub" ? process.env.DEVPAPER_OUT : undefined) ??
-      DEFAULT_OUT
+    argValue(argv, "--out") ?? envPath("DEVPAPER_OUT") ?? DEFAULT_OUT
   );
 
   if (cmd === "hub") {
@@ -182,8 +182,11 @@ async function main() {
 
   if (cmd === "index") {
     const writeMd = argv.includes("--md");
-    const indexOut = argValue(argv, "--out");
-    const calOut = indexOut ? resolveOut(indexOut) : path.resolve(logsDir, "..", "dist");
+    const explicitOut =
+      argValue(argv, "--out") != null || envPath("DEVPAPER_OUT") !== undefined;
+    const calOut = explicitOut
+      ? outDir
+      : path.resolve(logsDir, "..", "dist");
     const { jsonPath, entryCount, hubCalendarPath } = await buildMemoryIndex(logsDir, {
       writeMd,
       outDir: calOut,

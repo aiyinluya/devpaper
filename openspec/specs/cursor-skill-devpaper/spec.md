@@ -62,12 +62,17 @@ Rule 与执笔规范 MUST 在适当时机提示：重要错误类使用稳定 **
 
 ### Requirement: Cursor Rule 一键落地（init-cursor）
 
-CLI MAY 提供 **`devpaper init-cursor`**：在目标项目根（默认当前工作目录，可用 **`--cwd`** 覆盖）创建 **`.cursor/rules/devpaper-log.mdc`**；**`--logs`** 与 **`--out`** MUST 同时提供（手记根目录与 HTML 输出根目录，相对路径相对 **`--cwd`** 解析为绝对路径后写入 Rule）。若目标 Rule 文件已存在，默认 MUST **不覆盖**（幂等）；用户传入 **`--force`** 时 MAY 覆盖。模板 MUST 随 npm 包分发（例如 **`templates/cursor/devpaper-log.mdc`**），不得依赖仅存在于 Git 仓库的 **`.cursor/`** 路径。
+CLI MAY 提供 **`devpaper init-cursor`**：在目标项目根（默认当前工作目录，可用 **`--cwd`** 覆盖）创建 **`.cursor/rules/devpaper-log.mdc`**；手记根目录与 HTML 输出根 MUST 通过 **`--logs` / `--out`** 或环境变量 **`DEVPAPER_LOGS` / `DEVPAPER_OUT`**（与 `index` / `build` / `hub` 同一优先级：命令行优先）给出；相对路径相对 **`--cwd`** 解析为绝对路径后写入 Rule。若目标 Rule 文件已存在，默认 MUST **不覆盖**（幂等）；用户传入 **`--force`** 时 MAY 覆盖。模板 MUST 随 npm 包分发（例如 **`templates/cursor/devpaper-log.mdc`**），不得依赖仅存在于 Git 仓库的 **`.cursor/`** 路径。
 
 #### Scenario: 首次初始化
 
 - **WHEN** 用户在空 Cursor 规则目录的业务仓库根执行 `devpaper init-cursor --logs ./logs --out ./dist`
 - **THEN** 生成 **`.cursor/rules/devpaper-log.mdc`** 且正文包含已解析的 **`--logs` / `--out`** 绝对路径及与 CLI 一致的收尾命令提示
+
+#### Scenario: 用环境变量代替参数
+
+- **WHEN** 用户已设置 **`DEVPAPER_LOGS`** 与 **`DEVPAPER_OUT`**（非空），且执行 `devpaper init-cursor --cwd <项目根>` 而未传 **`--logs` / `--out`**
+- **THEN** 生成 Rule 且正文包含由环境变量解析得到的绝对路径（与命令行传入等价）
 
 #### Scenario: 已存在文件
 

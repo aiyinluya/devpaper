@@ -152,6 +152,8 @@ devpaper hub
 
 启动后终端会**醒目打印** `http://127.0.0.1:<端口>/hub/index.html`；加 **`--open`** 可尝试自动用系统浏览器打开。仍用 **`Ctrl+C`** 停服。也可用命令行覆盖路径：`devpaper hub --logs D:/Notes/... --out D:/Notes/...`。
 
+**手记控制台页（`hub/index.html`）怎么用**：在浏览器打开上述 **`…/hub/index.html`**（勿用 `file://`）。连上本服务后，月历走 **`/api/calendar`**，页内链接 **`/dist/…`**、**`/logs/…`** 会映射到**当前这次 hub** 所用的手记根与 HTML 输出根（与 `--logs`/`--out` 或 **`DEVPAPER_LOGS`/`DEVPAPER_OUT`** 一致），点「月刊」、预览链会打开你机器上真实生成的那份 HTML。
+
 #### 方式 B：只要月历、不要网页按钮 — `npx serve` 静态站
 
 **在仓库根**执行（需已装 Node，会临时下载 `serve`）：
@@ -204,21 +206,30 @@ npx --yes serve .
 
 首次克隆某业务仓库后执行一次 **`npm run devpaper:rule`**，之后日常 **`devpaper:idx`** / **`devpaper:day`**。
 
+#### 单仓库 vs 多仓库：npm 与手记控制台（hub）
+
+| 场景 | `npm` 与 `--logs` / `--out` | 手记控制台 **`hub`** |
+|------|-----------------------------|----------------------|
+| **单项目**（手记落在各自仓库里） | 在该仓库 **`npm install devpaper`**（建议 `devDependencies`）。`init-cursor` 与日常脚本里 **`--logs` / `--out`** 指向本仓的 **`./logs`、`./dist`**（或你自定的相对路径）。 | 在 **该仓库根** 执行 **`npm run dp:hub`**，或 **`devpaper hub --logs ./logs --out ./dist`**（也可用仓库 `scripts` 封装）。只看本仓数据时，**每个仓库各起一个 hub** 即可。 |
+| **多项目共用手记**（同一天一个 `YYYY-MM-DD.md`，多仓写**同一**磁盘目录） | **每个**业务仓库仍各自 **`npm install devpaper`**；各仓 **`init-cursor`** 与上表「消费者 `package.json`」里的 **`--logs` / `--out` 必须相同**（都指向全局手记根与 HTML 输出根）。 | **通常只起一个** `devpaper hub`，`--logs` / `--out`（或环境变量 **`DEVPAPER_LOGS` / `DEVPAPER_OUT`**）与上**同一对路径**；任一仓改过 md 后须跑 **`devpaper index`**（或依赖 hub 页内刷新），月历格子与按钮才跟得上。若多终端各开各的 hub 但路径**仍指向同一对** `logs`/`out`，等价于多个窗口盯同一套数据。 |
+
+**再强调**：跑 **`dp:idx` / build** 不必开 hub；开 hub 只为了在浏览器里看月历或用页内 **`/api/*`** 按钮——见上文 **第四节**。
+
 ---
 
 ## CLI 与 npm：完整参数表
 
 **前置条件**：Node.js **≥ 18**；在**包根**（本仓库根或 `node_modules/devpaper`）执行 `npm install` 一次。
 
-**路径约定**：未指定 `--logs` / `--out` 时，CLI 固定使用**本包根目录**下的 `logs/` 与 `dist/`，与当前 shell 的 cwd 无关。你传入的相对路径仍相对**当前 shell 所在目录**解析。  
+**路径约定**：**`index` / `build` / `hub` / `init-cursor`** 在未传 `--logs` / `--out` 时，依次尝试 **环境变量 `DEVPAPER_LOGS` / `DEVPAPER_OUT`（非空）**、再落到**本包根目录**下的 `logs/` 与 `dist/`；**命令行参数始终优先于环境变量**。相对路径仍相对**当前 shell 所在目录**解析（`init-cursor` 中相对路径相对 **`--cwd`**，默认当前目录）。**`index` 特例**：若既未传 `--out` 也未设 `DEVPAPER_OUT`，则扫描 HTML、写 `hub-calendar.json` 时使用的输出根仍为 **`手记目录` 的上一级下的 `dist`**（与「只传 `--logs`」的旧脚本兼容）。  
 **克隆本仓库**：`logs/*.md` **不入 Git**；目录内保留 **`logs/.gitkeep`**。请自行新建 `logs/YYYY-MM-DD.md`，或运行 **`npm run sample:logs`** 生成虚构演示手记（会写入 `logs/`）。
 
 | 用途 | 命令 | 参数 | 默认 `--logs` | 默认 `--out` | 生成物 / 行为 |
 |------|------|------|---------------|--------------|----------------|
 | 帮助 | `node src/cli.mjs` | 无子命令或 `-h` / `--help` | — | — | 打印用法后退出 |
-| 生成 Cursor Rule | `node src/cli.mjs init-cursor` | **必填** `--logs`、`--out`；可选 `--cwd`、`--force` | — | — | 写入 `<cwd>/.cursor/rules/devpaper-log.mdc` |
-| 记忆索引 | `node src/cli.mjs index` | 可选 `--logs`、`--out`（`--out` 指定扫描 **dist** 的路径以写 `hub-calendar.json`）、`--md` | 本包 `logs` | — | `index.json`、`hub-calendar.json`；`--md` 再写 `INDEX.md` |
-| 本机控制台 | `node src/cli.mjs hub` | 可选 `--logs`、`--out`、`--port`、`--open`；`hub` 可用 **`DEVPAPER_LOGS` / `DEVPAPER_OUT`** 作默认路径 | 本包 `logs` | 本包 `dist` | 监听 127.0.0.1，静态 + `/api/*`；启动后打印可点击的月历 URL；**`--open`** 调系统浏览器 |
+| 生成 Cursor Rule | `node src/cli.mjs init-cursor` | `--logs`、`--out` 或 **`DEVPAPER_LOGS` / `DEVPAPER_OUT`**；可选 `--cwd`、`--force` | — | — | 写入 `<cwd>/.cursor/rules/devpaper-log.mdc` |
+| 记忆索引 | `node src/cli.mjs index` | 可选 `--logs`、`--out`、`--md`；输出根与 `hub-calendar` 见上文「路径约定」 | 本包 `logs` | 见上文 | `index.json`、`hub-calendar.json`；`--md` 再写 `INDEX.md` |
+| 本机控制台 | `node src/cli.mjs hub` | 可选 `--logs`、`--out`、`--port`、`--open` | 本包 `logs` | 本包 `dist` | 监听 127.0.0.1，静态 + `/api/*`；启动后打印可点击的月历 URL；**`--open`** 调系统浏览器 |
 | 单日报纸 HTML | `node src/cli.mjs build --date YYYY-MM-DD` | **必填** `--date`；可选 `--logs`、`--out`、`--template`、`--section-title`、**`--single-html`** | 本包 `logs` | 本包 `dist` | 写入 **`dist/YYYY-MM/`**（版式页 + 各 `tpl-*.html`）；`--single-html` 时仅单文件同目录 |
 | 每天各一份 HTML | `node src/cli.mjs build --all` | 可选同上 | 同上 | 同上 | 每个有日志的日期各一份 |
 | 日期区间 + 导航 | `node src/cli.mjs build --from A --to B` | **必填** `--from`、`--to` | 同上 | 同上 | `<out>/range-…/index.html` + 各日 |

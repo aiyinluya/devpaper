@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { envPath } from "./env-path.mjs";
 import { PKG_ROOT } from "./paths.mjs";
 
 const TEMPLATE_REL = "templates/cursor/devpaper-log.mdc";
@@ -26,13 +27,13 @@ function toPortablePath(abs) {
 export async function initCursorCommand(argv) {
   const force = argv.includes("--force");
   const cwd = path.resolve(argValue(argv, "--cwd") ?? process.cwd());
-  const logsRaw = argValue(argv, "--logs");
-  const outRaw = argValue(argv, "--out");
+  const logsRaw = argValue(argv, "--logs") ?? envPath("DEVPAPER_LOGS");
+  const outRaw = argValue(argv, "--out") ?? envPath("DEVPAPER_OUT");
   if (!logsRaw || !outRaw) {
     return {
       ok: false,
       error:
-        "init-cursor 需要同时提供 --logs <dir> 与 --out <dir>（手记目录与 HTML 输出根目录）。",
+        "init-cursor 需要手记目录与 HTML 输出根：请传 --logs <dir> 与 --out <dir>，或设置环境变量 DEVPAPER_LOGS 与 DEVPAPER_OUT（相对路径相对 --cwd，默认当前目录）。",
     };
   }
   const logsDir = toPortablePath(path.resolve(cwd, logsRaw));

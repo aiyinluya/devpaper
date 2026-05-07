@@ -29,7 +29,7 @@ You MAY keep **one global `logs/` directory** shared across many code repos, and
 - **Disambiguate projects** with `#project-foo` tags in the body, and/or bake the repo/service into the **slug** (e.g. `acme-api-oauth-timeout`).
 - **Fingerprints** SHOULD stay “error family” oriented; add a short **prefix** in the fingerprint line (e.g. `acme`, `jwt-exp`) if you want finer clustering in `index.json`.
 
-To install the Cursor rule into each repo with your chosen `--logs` / `--out`, run **`devpaper init-cursor`** (see the devpaper `README`).
+To install the Cursor rule into each repo with your chosen `--logs` / `--out`, run **`devpaper init-cursor`** (see the devpaper `README`). You MAY instead set **`DEVPAPER_LOGS`** and **`DEVPAPER_OUT`** once (non-empty); **`init-cursor`**, **`index`**, **`build`**, and **`hub`** all resolve paths in the same order: **CLI flags > env vars > package defaults** (see `README` for the `index` edge case when output root is omitted).
 
 ---
 

@@ -89,12 +89,44 @@ export async function startHubFromArgv(argv, opts) {
     });
   }
 
+  /** @param {string} rootAbs */
+  function isPathInsideDir(rootAbs, fileAbs) {
+    const rootWithSep = path.resolve(rootAbs) + path.sep;
+    const f = path.resolve(fileAbs);
+    return f === path.resolve(rootAbs) || f.startsWith(rootWithSep);
+  }
+
+  /**
+   * 供浏览器访问 /dist/*、/logs/*：映射到当前 hub 的 outDir / logsDir（与 API 一致）。
+   * @param {string} pathname 如 /dist/2026-04/index.html
+   * @param {"/dist" | "/logs"} prefix
+   * @param {string} rootAbs
+   */
+  async function serveDataMount(pathname, prefix, rootAbs) {
+    if (pathname !== prefix && !pathname.startsWith(prefix + "/")) {
+      return null;
+    }
+    const rest =
+      pathname === prefix ? "" : pathname.slice((prefix + "/").length);
+    const safe = path.normalize(rest).replace(/^(\.\.(\/|\\|$))+/, "");
+    if (safe === "" || safe === ".") return null;
+    const abs = path.join(rootAbs, safe);
+    if (!isPathInsideDir(rootAbs, abs)) return null;
+    try {
+      const st = await fs.stat(abs);
+      if (!st.isFile()) return null;
+      return await fs.readFile(abs);
+    } catch {
+      return null;
+    }
+  }
+
   /** @param {string} urlPath */
   async function serveStatic(urlPath) {
     const rel = urlPath.replace(/^\/+/, "");
     const safe = path.normalize(rel).replace(/^(\.\.(\/|\\|$))+/, "");
     const abs = path.join(PKG_ROOT, safe);
-    if (!abs.startsWith(PKG_ROOT)) return null;
+    if (!isPathInsideDir(PKG_ROOT, abs)) return null;
     try {
       const st = await fs.stat(abs);
       if (!st.isFile()) return null;
@@ -299,7 +331,10 @@ export async function startHubFromArgv(argv, opts) {
     if (req.method === "GET" || req.method === "HEAD") {
       let p = url.pathname;
       if (p === "/" || p === "") p = "/hub/index.html";
-      const buf = await serveStatic(p);
+      let buf =
+        (await serveDataMount(p, "/dist", outDir)) ??
+        (await serveDataMount(p, "/logs", logsDir));
+      if (!buf) buf = await serveStatic(p);
       if (buf) {
         const ext = path.extname(p);
         const ct =
@@ -341,6 +376,7 @@ export async function startHubFromArgv(argv, opts) {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   logs: ${logsDir}
   dist: ${outDir}
+  静态挂载: GET /dist/* → 上述 dist · GET /logs/* → 上述 logs（与页内链接一致）
   API: GET /api/calendar（含索引刷新）· POST /api/build-day · /api/build-month · /api/build-period-nav · /api/index
 `);
 
