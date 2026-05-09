@@ -2,6 +2,15 @@
 
 用 **Cursor 规则 + 执笔规范文档** 在 AI 解题过程中留下结构化手记，按日落盘到固定目录；用 **CLI** 生成报纸风 HTML（**单日多篇**；**周/月/区间**则生成「导航壳页 + 每日独立日报」可点击切换），并维护 **`index.json` 记忆索引**，减轻「不知道 AI 做了什么」和「同类错误反复踩」的问题。
 
+## 我只是想在业务项目里用
+
+1. 确认 **Node.js ≥ 18**、npm 可用：`node -v`、`npm -v`。
+2. 在你的业务项目根安装固定版本：`npm install devpaper@0.1.7 --save-dev`。
+3. 验证 CLI：`npx devpaper --help`。
+4. 按 [业务项目按仓库安装（中文步骤）](docs/install-per-project.zh.md) 复制 `package.json` scripts、生成 Cursor Rule、启动手记控制台。
+
+如果你是维护 devpaper 本包的人，发布前按 [发版流程（中文）](docs/release.zh.md) 检查版本、CHANGELOG、npm 权限、Git tag 与打包内容。
+
 **原始痛点**：自己写的代码出错，往往能快速联想到大致位置与原因；**若代码几乎全是 AI 写的**而中间过程未留痕，出问题时常**一无所知**。手记把**每日的中间出错、方案取舍**等写进人能读的 `logs/`，便于交付后再排障时对照，也便于与下一轮 AI 续接上下文。在 AI 编程范式下，人的重心更多在需求澄清、技术方案、**对 AI 产出与中间过程的审核**等——**阅读与维护每日手记**，宜与 Code Review、测试一样视为**必要模块**（更长叙事可写在本机 **`docs-local/`** 目录，**不入库**）。
 
 **为何叫「手记」**：强调内容**最终是给人读的**——人是意义与责任的终点；索引与 HTML 是让人更好读、让机器更好帮人的手段。它试图衔接 **古法编程**（过程留在注释与文档）与 **AI 编程**（过程易消散在对话）之间的断层，做一座可积累的桥。命名与立意的展开同样可放在 **`docs-local/`** 自拟文稿中（默认不提交 Git）。
@@ -12,7 +21,7 @@
 
 **参赛 / 路演 / 他人上手长文**：放在本机 **`docs-local/`**（默认不入库）。
 
-**更多文档**：[Log authoring guide](docs/log-authoring-guide.md)（英文格式骨架，**随 npm 包分发**）。路径 / a11y / 安全 / 备份等长文请放在本机自建的 **`docs-local/`**（**不入库**；可从历史提交或模板自行拷贝 `README.md` 骨架）。
+**更多文档**：[Log authoring guide](docs/log-authoring-guide.md)（英文格式骨架，**随 npm 包分发**）；[**业务项目按仓库安装（中文步骤）**](docs/install-per-project.zh.md)（Node/npm 要求、`npm install`、`scripts` 示例、多项目与环境变量）；[**发版流程（中文）**](docs/release.zh.md)（CHANGELOG、版本号、`npm publish`、Git tag 与常见错误）。路径 / a11y / 安全 / 备份等长文请放在本机自建的 **`docs-local/`**（**不入库**；可从历史提交或模板自行拷贝 `README.md` 骨架）。
 
 **路径易错点**：本仓库**根目录即包根**，请用 **`node src/cli.mjs …`** 或 **`npm run dp:*` / `npm run html:*`**。若从 **npm 安装的 `node_modules/devpaper`** 内执行，仍用 `node src/cli.mjs`，**不要**再套一层 `devpaper/` 前缀路径。
 

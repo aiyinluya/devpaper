@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-05-09
+
+### Added
+
+- **安装入口**：README 顶部新增「我只是想在业务项目里用」快速路径，直达业务项目安装步骤。
+- **发版手册**：新增 [docs/release.zh.md](docs/release.zh.md)，覆盖 `CHANGELOG`、版本号、`npm publish`、Git tag 与常见 401/404/403/2FA 问题，并随 npm 包分发。
+- **测试覆盖**：新增 hub 控制台集成测试，覆盖 `/hub/index.html`、`/logs/*`、`/dist/*` 映射到当前 `logsDir` / `outDir`；补充 `build --date` 读取 `DEVPAPER_LOGS` / `DEVPAPER_OUT` 的 CLI 测试。
+
+### Changed
+
+- **`devpaper hub` 可测试性**：`startHubFromArgv()` 返回 `{ server, url, logsDir, outDir }`，方便集成测试关闭本机服务；CLI 使用方式不变。
+
 ## [0.1.6] - 2026-05-07
 
 ### Fixed
@@ -77,6 +89,7 @@
 - 拉取含新模板或 HTML 结构变更的版本后，对受影响月份重跑 **`npm run html:month -- YYYY-MM`**（仓库根 **`npm run dp:month -- …`**），以免版式下拉仍为旧产物。
 - 若依赖 `index.json` 中的 `slug` 做外链，本次 slug 解析修复会使**新索引**与旧索引中同一篇的 `slug` 可能不一致；需要时可 **`npm run idx`** / **`npm run dp:idx`** 全量重建索引。
 
+[0.1.7]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.7
 [0.1.6]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.6
 [0.1.5]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.5
 [0.1.4]: https://github.com/aiyinluya/devpaper/releases/tag/v0.1.4

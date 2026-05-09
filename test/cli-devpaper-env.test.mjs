@@ -34,3 +34,27 @@ test("index CLI: DEVPAPER_LOGS / DEVPAPER_OUT 决定手记与输出根", async (
   await fs.access(path.join(logs, "index.json"));
   await fs.access(path.join(logs, "hub-calendar.json"));
 });
+
+test("build CLI: DEVPAPER_LOGS / DEVPAPER_OUT 决定手记与输出根", async () => {
+  const base = await fs.mkdtemp(path.join(os.tmpdir(), "dp-env-build-"));
+  const logs = path.join(base, "logs");
+  const dist = path.join(base, "dist");
+  await fs.mkdir(logs, { recursive: true });
+  await fs.writeFile(
+    path.join(logs, "2026-05-07.md"),
+    "# d\n\n## 09:00 · build-env — t\n\nbody\n",
+    "utf8"
+  );
+  const env = {
+    ...process.env,
+    DEVPAPER_LOGS: logs,
+    DEVPAPER_OUT: dist,
+  };
+  const r = spawnSync(process.execPath, [cli, "build", "--date", "2026-05-07"], {
+    cwd: root,
+    encoding: "utf8",
+    env,
+  });
+  assert.equal(r.status, 0, r.stderr + r.stdout);
+  await fs.access(path.join(dist, "2026-05", "2026-05-07.html"));
+});

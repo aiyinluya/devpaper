@@ -40,6 +40,7 @@ function openUrlInBrowser(url) {
 /**
  * @param {string[]} argv
  * @param {{ logsDir: string, outDir: string, port: number, openBrowser?: boolean }} opts
+ * @returns {Promise<{ server: http.Server, url: string, logsDir: string, outDir: string }>}
  */
 export async function startHubFromArgv(argv, opts) {
   const openBrowser = Boolean(opts.openBrowser);
@@ -366,7 +367,10 @@ export async function startHubFromArgv(argv, opts) {
     server.on("error", reject);
   });
 
-  const hubUrl = `http://127.0.0.1:${port}/hub/index.html`;
+  const address = server.address();
+  const actualPort =
+    address && typeof address === "object" ? address.port : port;
+  const hubUrl = `http://127.0.0.1:${actualPort}/hub/index.html`;
   console.log(`
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   手记控制台已启动（仅监听 127.0.0.1）
@@ -387,4 +391,6 @@ export async function startHubFromArgv(argv, opts) {
       console.warn("未能自动打开浏览器（可手动复制上方 URL）:", e);
     }
   }
+
+  return { server, url: hubUrl, logsDir, outDir };
 }
